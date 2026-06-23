@@ -18,6 +18,7 @@ const endingOverlay = document.getElementById("endingOverlay");
 const endingCard = document.getElementById("endingCard");
 const endingTitle = document.getElementById("endingTitle");
 const endingBody = document.getElementById("endingBody");
+const endingImage = document.getElementById("endingImage");
 const endingShareButton = document.getElementById("endingShareButton");
 const endingLoadButton = document.getElementById("endingLoadButton");
 const endingCloseButton = document.getElementById("endingCloseButton");
@@ -49,14 +50,32 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function addMessage(speaker, text, shouldRecord = true) {
+function addMessage(speaker, text, shouldRecord = true, image = null) {
   const row = document.createElement("div");
 
   if (speaker === "system") {
     row.className = "system-message";
-    row.textContent = text;
+    if (text) {
+      const label = document.createElement("div");
+      label.textContent = text;
+      row.appendChild(label);
+    }
+    if (image) {
+      const img = document.createElement("img");
+      img.className = "chat-image";
+      img.src = `./assets/images/${image}`;
+      img.alt = text || "画像";
+      row.appendChild(img);
+    }
   } else {
     row.className = `message-row ${speaker}`;
+    if (speaker === "akari") {
+      const icon = document.createElement("img");
+      icon.className = "akari-icon";
+      icon.src = "./assets/images/icon_akari_01.webp";
+      icon.alt = "朱里";
+      row.appendChild(icon);
+    }
     const bubble = document.createElement("div");
     bubble.className = "bubble";
     bubble.textContent = text;
@@ -66,7 +85,7 @@ function addMessage(speaker, text, shouldRecord = true) {
   chatLog.appendChild(row);
   chatLog.scrollTop = chatLog.scrollHeight;
   if (shouldRecord) {
-    state.chatLog.push({ speaker, text });
+    state.chatLog.push({ speaker, text, image });
   }
 }
 
@@ -123,7 +142,7 @@ async function playStory(id) {
     await sleep(typingMs);
   }
 
-  addMessage(node.speaker, node.text);
+  addMessage(node.speaker, node.text, true, node.image ?? null);
 
   if (node.ending) {
     setInputEnabled(false);
@@ -297,6 +316,7 @@ function openSearchDetail(pageId) {
 
   const detail = document.createElement("article");
   detail.className = "detail-page";
+  detail.classList.toggle("dark-detail", page.theme === "dark");
 
   const back = document.createElement("button");
   back.className = "back-button";
@@ -318,6 +338,15 @@ function openSearchDetail(pageId) {
   detail.appendChild(back);
   detail.appendChild(title);
   detail.appendChild(url);
+
+  if (page.image) {
+    const img = document.createElement("img");
+    img.className = "search-detail-image";
+    img.src = `./assets/images/${page.image}`;
+    img.alt = page.title;
+    detail.appendChild(img);
+  }
+
   detail.appendChild(body);
 
   searchResults.appendChild(detail);
@@ -331,6 +360,13 @@ function showEnding(endingData) {
   endingOverlay.className = `ending-overlay ${endingData.type}`;
   endingTitle.textContent = endingData.title;
   endingBody.textContent = endingData.body;
+  if (endingData.image) {
+    endingImage.src = `./assets/images/${endingData.image}`;
+    endingImage.alt = endingData.title;
+    endingImage.classList.remove("hidden");
+  } else {
+    endingImage.classList.add("hidden");
+  }
 
   endingShareButton.onclick = () => {
     const shareUrl = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(endingData.shareText);
@@ -529,7 +565,7 @@ function loadFromSlot(slotNumber) {
 
   chatLog.innerHTML = "";
   state.chatLog.forEach(item => {
-    addMessage(item.speaker, item.text, false);
+    addMessage(item.speaker, item.text, false, item.image ?? null);
   });
 
   closeModal();

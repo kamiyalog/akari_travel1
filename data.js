@@ -18,7 +18,7 @@ const storyData = {
   },
   "3": {
     "speaker": "akari",
-    "text": "って、そうじゃなくて！\n今日はね、海の方に散歩しようともってさ！",
+    "text": "って、そうじゃなくて！\n今日はね、海の方に散歩しようと思ってさ！",
     "typingMs": 2400,
     "next": 4
   },
@@ -114,7 +114,8 @@ const storyData = {
   },
   "16": {
     "speaker": "system",
-    "text": "写真送信：海辺の向こうにぼんやり島。\n手前に「祭り会場はこちら」らしき看板がある",
+    "text": "画像送信",
+    "image": "photo_seaside_sign_01.webp",
     "afterMs": 2000,
     "next": 17
   },
@@ -140,12 +141,6 @@ const storyData = {
   "19": {
     "speaker": "akari",
     "text": "看板…？　あ。これか！　こんなに大きく書いてあったのに見逃してた！\nうっかりうっかり…。やっぱり頼りになるね！",
-    "next": 20
-  },
-  "20": {
-    "speaker": "system",
-    "text": "画像送信：看板には少し不吉なことが書いてある\n※■■はこちらから\n※潰されている文字は「生者」",
-    "afterMs": 2000,
     "next": 21
   },
   "21": {
@@ -220,7 +215,8 @@ const storyData = {
   },
   "34": {
     "speaker": "system",
-    "text": "画像送信：祭りの様子。\n人々はみな、お面をつけている",
+    "text": "画像送信",
+    "image": "photo_festival_01.webp",
     "afterMs": 2000,
     "next": 35
   },
@@ -285,7 +281,8 @@ const storyData = {
   },
   "43": {
     "speaker": "system",
-    "text": "画像送信：お面屋のお面ラインナップ\nウサギとキツネの仮面だけ。\n横にお祭りのポスターがあり、祭りの名前が書いてある",
+    "text": "画像送信",
+    "image": "photo_mask_shop_01.webp",
     "afterMs": 2000,
     "next": 44
   },
@@ -339,7 +336,8 @@ const storyData = {
   },
   "481": {
     "speaker": "system",
-    "text": "画像送信：ウサギの面を斜めにかぶった朱里",
+    "text": "画像送信",
+    "image": "photo_rabbit_mask_01.webp",
     "afterMs": 2000,
     "next": 482
   },
@@ -381,14 +379,16 @@ const storyData = {
   },
   "54": {
     "speaker": "system",
-    "text": "画像送信：コンクリート打ちっぱなしの暗い部屋。\nドア、鉄格子付きの窓、換気ダクト、脚立が見える",
+    "text": "画像送信",
+    "image": "photo_concrete_room_01.webp",
     "afterMs": 2000,
     "next": 55
   },
   "55": {
     "speaker": "akari",
-    "text": "それに何か聞こえる…。\n録音するからちょっと聞いてみて",
-    "next": 56
+    "text": "それに何か聞こえる…。\nちょっと待ってね…",
+    "afterMs": 5000,
+    "next": 58
   },
   "56": {
     "speaker": "akari",
@@ -405,7 +405,7 @@ const storyData = {
   },
   "58": {
     "speaker": "akari",
-    "text": "聞こえたみたいだね…なんか「狩り」とか聞こえたけど…",
+    "text": "なんか「本祭が始まる」とか「狩り」とか聞こえたけど…",
     "next": 59
   },
   "59": {
@@ -555,7 +555,8 @@ const storyData = {
   },
   "76": {
     "speaker": "system",
-    "text": "画像送信：船着き場に、２艘の船が止まっている。\n赤い船と黄色い船。\n船同士は結構離れている",
+    "text": "画像送信",
+    "image": "photo_boats_red_yellow_01.webp",
     "afterMs": 2000,
     "next": 77
   },
@@ -662,7 +663,7 @@ const storyData = {
   "90": {
     "speaker": "akari",
     "text": "なんてね♪",
-    "afterMs": 2000,
+    "afterMs": 5000,
     "next": 91
   },
   "91": {
@@ -672,7 +673,8 @@ const storyData = {
   },
   "92": {
     "speaker": "system",
-    "text": "画像送信：キツネの面を斜めにかぶった朱里",
+    "text": "画像送信",
+    "image": "photo_fox_mask_01.webp",
     "afterMs": 2000,
     "next": 921
   },
@@ -712,7 +714,8 @@ const storyData = {
   },
   "98": {
     "speaker": "system",
-    "text": "画像送信：豪華な和室。\n祭壇のようなものと、ご飯のセットが置いてある",
+    "text": "画像送信",
+    "image": "photo_washitsu_room_01.webp",
     "afterMs": 2000,
     "next": 99
   },
@@ -747,7 +750,8 @@ const storyData = {
   "104": {
     "speaker": "akari",
     "text": "ん？　ちょっと待って何か聞こえる",
-    "next": 105
+    "afterMs": 3000,
+    "next": 108
   },
   "105": {
     "speaker": "akari",
@@ -854,7 +858,8 @@ const storyData = {
   },
   "120": {
     "speaker": "system",
-    "text": "画像送信：扉の写真。\n「非常通行扉」と書いてある",
+    "text": "画像送信",
+    "image": "photo_emergency_door_01.webp",
     "waitInput": true,
     "branches": [
       {
@@ -912,7 +917,8 @@ const storyData = {
   },
   "126": {
     "speaker": "system",
-    "text": "画像送信：船着き場に、２艘の船が止まっている。\n赤い船と黄色い船。\n船同士は結構離れている",
+    "text": "画像送信",
+    "image": "photo_boats_red_yellow_01.webp",
     "afterMs": 2000,
     "next": 127
   },
@@ -1011,7 +1017,8 @@ const storyData = {
       "type": "bad",
       "title": "BAD END 1",
       "body": "そこにいたのは狐面を付けた人達だった。\n彼らは朱里を見つけたとたん朱里に向かって走り出し―――\n\n朱里とはそれ以降連絡が取れなくなった",
-      "shareText": "明坂朱里を探しています\nアドレス（後で）\n#ARG #朱里の旅実況海編"
+      "shareText": "明坂朱里を探しています\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "image": "photo_badend1_01.webp"
     }
   },
   "1002": {
@@ -1022,7 +1029,8 @@ const storyData = {
       "type": "bad",
       "title": "BAD END 2",
       "body": "その船は朱里が乗るべき船ではなかった。\nそれ以降、朱里の姿を見た者はいない",
-      "shareText": "海難事故の詳細を求めています\nアドレス（後で）\n#ARG #朱里の旅実況海編"
+      "shareText": "海難事故の詳細を求めています\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "image": "photo_badend2_01.webp"
     }
   },
   "1003": {
@@ -1033,7 +1041,8 @@ const storyData = {
       "type": "bad",
       "title": "BAD END 3",
       "body": "道の先には、厳かな空間が広がっていた。\nそれ以降、朱里は変わってしまった。\nきっともう朱里ではないのかもしれない。",
-      "shareText": "ええっと、どなたでしょうか？\nアドレス（後で）\n#ARG #朱里の旅実況海編"
+      "shareText": "ええっと、どなたでしょうか？\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "image": "photo_badend3_01.webp"
     }
   },
   "1004": {
@@ -1044,7 +1053,8 @@ const storyData = {
       "type": "bad",
       "title": "BAD END 4",
       "body": "扉の先には、何人もの狐面の人たちがいた。\n彼らは無言で朱里を押さえつけ…、\nそれ以降、朱里に連絡がつくことはなかった。\nただ、地方新聞に載っていた巫女服の女性が、朱里に見えてしょうがない。何故なんだろう。",
-      "shareText": "転じて昇るは、何者なりや\nアドレス（後で）\n#ARG #朱里の旅実況海編"
+      "shareText": "転じて昇るは、何者なりや\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "image": "photo_badend4_01.webp"
     }
   },
   "1005": {
@@ -1055,7 +1065,8 @@ const storyData = {
       "type": "bad",
       "title": "BAD END 5",
       "body": "その船は朱里が乗るべき船ではなかった。\n船には兎面を付けた者たちが乗っており、彼らは無言で朱里を見つめていた。\nそれ以降、その船は見つかっていない。",
-      "shareText": "船は流れて何処へ行く\nアドレス（後で）\n#ARG #朱里の旅実況海編"
+      "shareText": "船は流れて何処へ行く\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "image": "photo_badend5_01.webp"
     }
   },
   "2001": {
@@ -1066,7 +1077,8 @@ const storyData = {
       "type": "good",
       "title": "GOOD END 1",
       "body": "朱里は無事に家へと帰れた。\nその日は朱里と一日中話した。\n\n後日、朱里は島を見に行ったらしいが、\nその島の姿はどこにもなかったらしい。",
-      "shareText": "朱里ちゃん　生還！！！\nアドレス（後で）\n#ARG #朱里の旅実況海編"
+      "shareText": "朱里ちゃん　生還！！！\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "image": "photo_goodend1_01.webp"
     }
   },
   "2002": {
@@ -1077,7 +1089,8 @@ const storyData = {
       "type": "good",
       "title": "GOOD END 2",
       "body": "朱里は無事に家へと帰れた。\n\nこの前家に行ったら、壁に狐の面が飾ってあった。\nなんであんなもの飾ってるんだろう…",
-      "shareText": "これはこれで思い出だしね！\nアドレス（後で）\n#ARG #朱里の旅実況海編"
+      "shareText": "これはこれで思い出だしね！\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "image": "photo_goodend2_01.webp"
     }
   }
 };
