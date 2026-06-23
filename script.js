@@ -1,6 +1,15 @@
 const chatLog = document.getElementById("chatLog");
 const playerInput = document.getElementById("playerInput");
 const sendButton = document.getElementById("sendButton");
+const chatTab = document.getElementById("chatTab");
+const searchTab = document.getElementById("searchTab");
+const chatScreen = document.getElementById("chatScreen");
+const searchScreen = document.getElementById("searchScreen");
+const screenTitle = document.getElementById("screenTitle");
+const screenStatus = document.getElementById("screenStatus");
+const searchInput = document.getElementById("searchInput");
+const searchButton = document.getElementById("searchButton");
+const searchResults = document.getElementById("searchResults");
 
 const state = {
   currentId: 1,
@@ -160,3 +169,66 @@ playerInput.addEventListener("keydown", event => {
 });
 
 playStory(state.currentId);
+
+
+function switchScreen(screen) {
+  const isChat = screen === "chat";
+
+  chatScreen.classList.toggle("active-screen", isChat);
+  searchScreen.classList.toggle("active-screen", !isChat);
+  chatTab.classList.toggle("active", isChat);
+  searchTab.classList.toggle("active", !isChat);
+
+  screenTitle.textContent = isChat ? "朱里" : "Search";
+  screenStatus.textContent = isChat ? "オンライン" : "調査中";
+
+  if (!isChat) searchInput.focus();
+}
+
+function runSearch() {
+  const query = searchInput.value.trim();
+  if (!query) return;
+
+  searchHistory.push(query);
+
+  const results = searchPages.filter(page => includesAny(query, page.keywords));
+
+  searchResults.innerHTML = "";
+
+  if (results.length === 0) {
+    const noResult = document.createElement("p");
+    noResult.className = "no-result";
+    noResult.textContent = `「${query}」に一致する検索結果はありません。`;
+    searchResults.appendChild(noResult);
+    return;
+  }
+
+  results.forEach(result => {
+    const card = document.createElement("article");
+    card.className = "result-card";
+
+    const title = document.createElement("div");
+    title.className = "result-title";
+    title.textContent = result.title;
+
+    const url = document.createElement("div");
+    url.className = "result-url";
+    url.textContent = result.url;
+
+    const snippet = document.createElement("div");
+    snippet.className = "result-snippet";
+    snippet.textContent = result.snippet;
+
+    card.appendChild(title);
+    card.appendChild(url);
+    card.appendChild(snippet);
+    searchResults.appendChild(card);
+  });
+}
+
+chatTab.addEventListener("click", () => switchScreen("chat"));
+searchTab.addEventListener("click", () => switchScreen("search"));
+searchButton.addEventListener("click", runSearch);
+searchInput.addEventListener("keydown", event => {
+  if (event.key === "Enter") runSearch();
+});

@@ -3,28 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>朱里チャットゲーム 試作版 v2</title>
+  <title>朱里チャットゲーム 試作版 v3</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
     <header class="chat-header">
       <div>
-        <div class="chat-name">朱里</div>
-        <div class="chat-status">オンライン</div>
+        <div class="chat-name" id="screenTitle">朱里</div>
+        <div class="chat-status" id="screenStatus">オンライン</div>
       </div>
       <button id="menuButton" class="menu-button">☰</button>
     </header>
 
-    <main id="chatLog" class="chat-log"></main>
+    <nav class="tab-bar">
+      <button id="chatTab" class="tab-button active">Chat</button>
+      <button id="searchTab" class="tab-button">Search</button>
+    </nav>
 
-    <footer class="input-area">
-      <input id="playerInput" type="text" placeholder="メッセージを入力" autocomplete="off" disabled />
-      <button id="sendButton" disabled>送信</button>
-    </footer>
+    <section id="chatScreen" class="screen active-screen">
+      <main id="chatLog" class="chat-log"></main>
+
+      <footer class="input-area">
+        <input id="playerInput" type="text" placeholder="メッセージを入力" autocomplete="off" disabled />
+        <button id="sendButton" disabled>送信</button>
+      </footer>
+    </section>
+
+    <section id="searchScreen" class="screen">
+      <div class="search-page">
+        <div class="search-logo">Search</div>
+        <div class="search-box">
+          <input id="searchInput" type="text" placeholder="検索ワードを入力" autocomplete="off" />
+          <button id="searchButton">検索</button>
+        </div>
+        <div id="searchResults" class="search-results">
+          <p class="search-help">気になる言葉を検索してみよう。</p>
+        </div>
+      </div>
+    </section>
   </div>
 
   <script src="data.js"></script>
+  <script src="searchData.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
