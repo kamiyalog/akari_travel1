@@ -206,6 +206,7 @@ function runSearch() {
   results.forEach(result => {
     const card = document.createElement("article");
     card.className = "result-card";
+    card.addEventListener("click", () => openSearchDetail(result.id));
 
     const title = document.createElement("div");
     title.className = "result-title";
@@ -224,6 +225,47 @@ function runSearch() {
     card.appendChild(snippet);
     searchResults.appendChild(card);
   });
+}
+
+function decorateBlackout(text) {
+  return text
+    .replaceAll("■■■", '<span class="blackout">■■■</span>')
+    .replaceAll("■■", '<span class="blackout">■■</span>')
+    .replaceAll("■", '<span class="blackout">■</span>');
+}
+
+function openSearchDetail(pageId) {
+  const page = searchPages.find(item => item.id === pageId);
+  if (!page) return;
+
+  searchResults.innerHTML = "";
+
+  const detail = document.createElement("article");
+  detail.className = "detail-page";
+
+  const back = document.createElement("button");
+  back.className = "back-button";
+  back.textContent = "← 検索結果に戻る";
+  back.addEventListener("click", runSearch);
+
+  const title = document.createElement("div");
+  title.className = "detail-title";
+  title.textContent = page.title;
+
+  const url = document.createElement("div");
+  url.className = "detail-url";
+  url.textContent = page.url;
+
+  const body = document.createElement("div");
+  body.className = "detail-body";
+  body.innerHTML = decorateBlackout(page.body);
+
+  detail.appendChild(back);
+  detail.appendChild(title);
+  detail.appendChild(url);
+  detail.appendChild(body);
+
+  searchResults.appendChild(detail);
 }
 
 chatTab.addEventListener("click", () => switchScreen("chat"));
