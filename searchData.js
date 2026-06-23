@@ -66,7 +66,7 @@ const searchPages = [
     title: "館内のご案内",
     url: "staff-only.example/building/map",
     snippet: "館内マップを表示します。蒼の間、奥の間、非常通行扉などが記載されています。",
-    body: "館内のご案内\n\n※このページには本来、館内マップが表示されます。\n\n現在、画像データは読み込めません。\n\n【記載予定】\n・蒼の間\n・奥の間\n・廊下\n・非常通行扉\n・関係者用通路"
+    body: "館内のご案内"
   },
   {
     id: "emergency-door",

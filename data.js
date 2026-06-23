@@ -58,8 +58,8 @@ const storyData = {
   },
   "9": {
     "speaker": "system",
-    "text": "写真送信：商店街の写真\n黄兎書店、いけいけ電気店の看板が見える",
-    "typingMs": 0,
+    "text": "写真送信",
+    "image": "photo_shopping_street_01.webp",
     "afterMs": 2000,
     "next": 10
   },

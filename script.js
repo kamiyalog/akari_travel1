@@ -539,16 +539,18 @@ function showLoadMenu() {
 }
 
 function showTitleNotice() {
-  openModal("タイトルへ戻る", `
-    <div class="notice-box">
-      タイトル画面はまだ未実装です。
+  if (!confirm("最初から始めますか？\n※セーブデータは残ります")) {
+    return;
+  }
 
-      今後ここに
-      「はじめから」
-      「つづきから」
-      を追加します。
-    </div>
-  `);
+  localStorage.removeItem(AUTOSAVE_KEY);
+
+  state.currentId = 1;
+  state.currentRoute = "common";
+  state.waiting = false;
+  state.chatLog = [];
+
+  location.reload();
 }
 
 function loadFromSlot(slotNumber) {
