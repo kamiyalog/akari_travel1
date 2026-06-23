@@ -592,3 +592,26 @@ endingLoadButton.addEventListener("click", () => {
 });
 
 endingCloseButton.addEventListener("click", closeEnding);
+document.addEventListener("click", (e) => {
+
+  const img = e.target.closest(
+    ".chat-image, .search-detail-image"
+  );
+
+  if (!img) return;
+
+  const overlay = document.createElement("div");
+
+  overlay.className = "image-modal";
+
+  overlay.innerHTML = `
+    <img src="${img.src}" alt="">
+  `;
+
+  overlay.addEventListener("click", () => {
+    overlay.remove();
+  });
+
+  document.body.appendChild(overlay);
+
+});

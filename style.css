@@ -616,3 +616,26 @@ body {
 .search-detail-image {
   display:block; width:100%; max-height:360px; object-fit:contain; border-radius:10px; margin:12px 0 16px; background:rgba(0,0,0,.08);
 }
+.image-modal {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,0.85);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+
+  cursor: zoom-out;
+}
+
+.image-modal img {
+  max-width: 92vw;
+  max-height: 92vh;
+
+  object-fit: contain;
+
+  border-radius: 10px;
+}
