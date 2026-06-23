@@ -1017,7 +1017,7 @@ const storyData = {
       "type": "bad",
       "title": "BAD END 1",
       "body": "そこにいたのは狐面を付けた人達だった。\n彼らは朱里を見つけたとたん朱里に向かって走り出し―――\n\n朱里とはそれ以降連絡が取れなくなった",
-      "shareText": "明坂朱里を探しています\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "shareText": "明坂朱里を探しています\nhttps://note.com/preview/n6460e4c098c9?prev_access_key=e6e7ed13cac24fc9a696cd4976d08a78\n#ARG #朱里の旅実況！海編",
       "image": "photo_badend1_01.webp"
     }
   },
@@ -1029,7 +1029,7 @@ const storyData = {
       "type": "bad",
       "title": "BAD END 2",
       "body": "その船は朱里が乗るべき船ではなかった。\nそれ以降、朱里の姿を見た者はいない",
-      "shareText": "海難事故の詳細を求めています\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "shareText": "海難事故の詳細を求めています\nhttps://note.com/preview/n6460e4c098c9?prev_access_key=e6e7ed13cac24fc9a696cd4976d08a78\n#ARG #朱里の旅実況！海編",
       "image": "photo_badend2_01.webp"
     }
   },
@@ -1041,7 +1041,7 @@ const storyData = {
       "type": "bad",
       "title": "BAD END 3",
       "body": "道の先には、厳かな空間が広がっていた。\nそれ以降、朱里は変わってしまった。\nきっともう朱里ではないのかもしれない。",
-      "shareText": "ええっと、どなたでしょうか？\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "shareText": "ええっと、どなたでしょうか？\nhttps://note.com/preview/n6460e4c098c9?prev_access_key=e6e7ed13cac24fc9a696cd4976d08a78\n#ARG #朱里の旅実況！海編",
       "image": "photo_badend3_01.webp"
     }
   },
@@ -1053,7 +1053,7 @@ const storyData = {
       "type": "bad",
       "title": "BAD END 4",
       "body": "扉の先には、何人もの狐面の人たちがいた。\n彼らは無言で朱里を押さえつけ…、\nそれ以降、朱里に連絡がつくことはなかった。\nただ、地方新聞に載っていた巫女服の女性が、朱里に見えてしょうがない。何故なんだろう。",
-      "shareText": "転じて昇るは、何者なりや\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "shareText": "転じて昇るは、何者なりや\nhttps://note.com/preview/n6460e4c098c9?prev_access_key=e6e7ed13cac24fc9a696cd4976d08a78\n#ARG #朱里の旅実況！海編",
       "image": "photo_badend4_01.webp"
     }
   },
@@ -1065,7 +1065,7 @@ const storyData = {
       "type": "bad",
       "title": "BAD END 5",
       "body": "その船は朱里が乗るべき船ではなかった。\n船には兎面を付けた者たちが乗っており、彼らは無言で朱里を見つめていた。\nそれ以降、その船は見つかっていない。",
-      "shareText": "船は流れて何処へ行く\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "shareText": "船は流れて何処へ行く\nhttps://note.com/preview/n6460e4c098c9?prev_access_key=e6e7ed13cac24fc9a696cd4976d08a78\n#ARG #朱里の旅実況！海編",
       "image": "photo_badend5_01.webp"
     }
   },
@@ -1077,7 +1077,7 @@ const storyData = {
       "type": "good",
       "title": "GOOD END 1",
       "body": "朱里は無事に家へと帰れた。\nその日は朱里と一日中話した。\n\n後日、朱里は島を見に行ったらしいが、\nその島の姿はどこにもなかったらしい。",
-      "shareText": "朱里ちゃん　生還！！！\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "shareText": "朱里ちゃん　生還！！！\nhttps://note.com/preview/n6460e4c098c9?prev_access_key=e6e7ed13cac24fc9a696cd4976d08a78\n#ARG #朱里の旅実況！海編",
       "image": "photo_goodend1_01.webp"
     }
   },
@@ -1089,7 +1089,7 @@ const storyData = {
       "type": "good",
       "title": "GOOD END 2",
       "body": "朱里は無事に家へと帰れた。\n\nこの前家に行ったら、壁に狐の面が飾ってあった。\nなんであんなもの飾ってるんだろう…",
-      "shareText": "これはこれで思い出だしね！\nアドレス（後で）\n#ARG #朱里の旅実況！海編",
+      "shareText": "これはこれで思い出だしね！\nhttps://note.com/preview/n6460e4c098c9?prev_access_key=e6e7ed13cac24fc9a696cd4976d08a78\n#ARG #朱里の旅実況！海編",
       "image": "photo_goodend2_01.webp"
     }
   }
