@@ -14,6 +14,13 @@ const modalOverlay = document.getElementById("modalOverlay");
 const modalTitle = document.getElementById("modalTitle");
 const modalBody = document.getElementById("modalBody");
 const modalCloseButton = document.getElementById("modalCloseButton");
+const endingOverlay = document.getElementById("endingOverlay");
+const endingCard = document.getElementById("endingCard");
+const endingTitle = document.getElementById("endingTitle");
+const endingBody = document.getElementById("endingBody");
+const endingShareButton = document.getElementById("endingShareButton");
+const endingLoadButton = document.getElementById("endingLoadButton");
+const endingCloseButton = document.getElementById("endingCloseButton");
 const menuButton = document.getElementById("menuButton");
 
 const state = {
@@ -120,6 +127,8 @@ async function playStory(id) {
 
   if (node.ending) {
     setInputEnabled(false);
+    await sleep(900);
+    showEnding(node.endingData);
     return;
   }
 
@@ -314,6 +323,31 @@ function openSearchDetail(pageId) {
   searchResults.appendChild(detail);
 }
 
+
+
+function showEnding(endingData) {
+  if (!endingData) return;
+
+  endingOverlay.className = `ending-overlay ${endingData.type}`;
+  endingTitle.textContent = endingData.title;
+  endingBody.textContent = endingData.body;
+
+  endingShareButton.onclick = () => {
+    const shareUrl = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(endingData.shareText);
+    window.open(shareUrl, "_blank", "noopener,noreferrer");
+  };
+
+  requestAnimationFrame(() => {
+    endingOverlay.classList.add("show");
+  });
+}
+
+function closeEnding() {
+  endingOverlay.classList.remove("show");
+  setTimeout(() => {
+    endingOverlay.className = "ending-overlay hidden";
+  }, 500);
+}
 
 function openModal(title, html = "") {
   modalTitle.textContent = title;
@@ -515,3 +549,10 @@ searchButton.addEventListener("click", runSearch);
 searchInput.addEventListener("keydown", event => {
   if (event.key === "Enter") runSearch();
 });
+
+endingLoadButton.addEventListener("click", () => {
+  closeEnding();
+  showLoadMenu();
+});
+
+endingCloseButton.addEventListener("click", closeEnding);
