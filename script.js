@@ -10,6 +10,11 @@ const screenStatus = document.getElementById("screenStatus");
 const searchInput = document.getElementById("searchInput");
 const searchButton = document.getElementById("searchButton");
 const searchResults = document.getElementById("searchResults");
+const modalOverlay = document.getElementById("modalOverlay");
+const modalTitle = document.getElementById("modalTitle");
+const modalBody = document.getElementById("modalBody");
+const modalCloseButton = document.getElementById("modalCloseButton");
+const menuButton = document.getElementById("menuButton");
 
 const state = {
   currentId: 1,
@@ -19,11 +24,25 @@ const state = {
   typingElement: null
 };
 
+const routeLabels = {
+  common: "海辺",
+  A: "ウサギの面",
+  A1: "地下施設",
+  A2: "船着き場",
+  A3: "帰還",
+  B: "キツネの面",
+  B2: "館内",
+  B3: "関係者船着き場",
+  B4: "帰還"
+};
+
+const SAVE_KEY_PREFIX = "akari_save_slot_";
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function addMessage(speaker, text) {
+function addMessage(speaker, text, shouldRecord = true) {
   const row = document.createElement("div");
 
   if (speaker === "system") {
@@ -39,7 +58,9 @@ function addMessage(speaker, text) {
 
   chatLog.appendChild(row);
   chatLog.scrollTop = chatLog.scrollHeight;
-  state.chatLog.push({ speaker, text });
+  if (shouldRecord) {
+    state.chatLog.push({ speaker, text });
+  }
 }
 
 function showTyping() {
@@ -82,6 +103,7 @@ async function playStory(id) {
   }
 
   state.currentId = id;
+  if (node.route) state.currentRoute = node.route;
   setInputEnabled(false);
 
   const typingMs = node.typingMs ?? DEFAULT_TYPING_MS;
@@ -95,6 +117,11 @@ async function playStory(id) {
   }
 
   addMessage(node.speaker, node.text);
+
+  if (node.ending) {
+    setInputEnabled(false);
+    return;
+  }
 
   if (node.waitInput) {
     setInputEnabled(true);
@@ -119,9 +146,19 @@ function includesAny(input, words = []) {
   return words.some(word => normalizedInput.includes(normalize(word)));
 }
 
+function getReactionRoutes() {
+  if (state.currentRoute === "A1" || state.currentRoute === "A2") return ["A", "common"];
+  if (state.currentRoute === "B2" || state.currentRoute === "B3") return ["B", "common"];
+  return [state.currentRoute, "common"];
+}
+
 function findChatReaction(input) {
-  const reactions = chatReactions[state.currentRoute] ?? [];
-  return reactions.find(item => includesAny(input, item.words));
+  for (const route of getReactionRoutes()) {
+    const reactions = chatReactions[route] ?? [];
+    const found = reactions.find(item => includesAny(input, item.words));
+    if (found) return found;
+  }
+  return null;
 }
 
 async function replyFromAkari(text, typingMs = 900) {
@@ -147,6 +184,15 @@ function handlePlayerInput() {
   if (node.answerType === "any") {
     playStory(node.next);
     return;
+  }
+
+  if (node.branches) {
+    const branch = node.branches.find(item => includesAny(text, item.words));
+    if (branch) {
+      if (branch.route) state.currentRoute = branch.route;
+      playStory(branch.next);
+      return;
+    }
   }
 
   if (includesAny(text, node.answerWords)) {
@@ -267,6 +313,201 @@ function openSearchDetail(pageId) {
 
   searchResults.appendChild(detail);
 }
+
+
+function openModal(title, html = "") {
+  modalTitle.textContent = title;
+  modalBody.innerHTML = html;
+  modalOverlay.classList.remove("hidden");
+}
+
+function closeModal() {
+  modalOverlay.classList.add("hidden");
+}
+
+function getSlotKey(slotNumber) {
+  return `${SAVE_KEY_PREFIX}${slotNumber}`;
+}
+
+function getSaveData(slotNumber) {
+  const raw = localStorage.getItem(getSlotKey(slotNumber));
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function getCurrentPlaceLabel() {
+  return routeLabels[state.currentRoute] ?? routeLabels.common;
+}
+
+function createSavePayload(slotNumber) {
+  return {
+    slotNumber,
+    savedAt: new Date().toLocaleString("ja-JP"),
+    currentId: state.currentId,
+    currentRoute: state.currentRoute,
+    placeLabel: getCurrentPlaceLabel(),
+    chatLog: state.chatLog,
+    searchHistory: searchHistory
+  };
+}
+
+function saveToSlot(slotNumber) {
+  if (!state.waiting) {
+    openModal("セーブ不可", `
+      <div class="notice-box">
+        今はセーブできません。
+
+        朱里が返事を待っている時だけ
+        セーブできます。
+      </div>
+    `);
+    return;
+  }
+
+  const existing = getSaveData(slotNumber);
+
+  if (existing) {
+    openModal("上書き確認", `
+      <div class="notice-box">
+        SLOT ${slotNumber} に上書きしますか？
+
+        現在のデータ：
+        ${existing.placeLabel}
+        ${existing.savedAt}
+      </div>
+      <div class="confirm-actions">
+        <button class="confirm-button cancel" onclick="showSaveMenu()">いいえ</button>
+        <button class="confirm-button primary" onclick="confirmSave(${slotNumber})">はい</button>
+      </div>
+    `);
+    return;
+  }
+
+  confirmSave(slotNumber);
+}
+
+function confirmSave(slotNumber) {
+  const payload = createSavePayload(slotNumber);
+  localStorage.setItem(getSlotKey(slotNumber), JSON.stringify(payload));
+
+  openModal("セーブ完了", `
+    <div class="notice-box">
+      SLOT ${slotNumber} にセーブしました。
+
+      ${payload.placeLabel}
+      ${payload.savedAt}
+    </div>
+  `);
+}
+
+function renderSlotButton(slotNumber, mode) {
+  const data = getSaveData(slotNumber);
+
+  if (!data) {
+    if (mode === "load") {
+      return `
+        <button class="slot-button" disabled>
+          <div class="slot-title">SLOT ${slotNumber}</div>
+          <div class="slot-meta empty-slot">空き</div>
+        </button>
+      `;
+    }
+
+    return `
+      <button class="slot-button" onclick="saveToSlot(${slotNumber})">
+        <div class="slot-title">SLOT ${slotNumber}</div>
+        <div class="slot-meta empty-slot">空き</div>
+      </button>
+    `;
+  }
+
+  const action = mode === "save" ? `saveToSlot(${slotNumber})` : `loadFromSlot(${slotNumber})`;
+
+  return `
+    <button class="slot-button" onclick="${action}">
+      <div class="slot-title">SLOT ${slotNumber}</div>
+      <div class="slot-meta">${data.placeLabel}
+${data.currentRoute} / message ${data.currentId}
+${data.savedAt}</div>
+    </button>
+  `;
+}
+
+function showMainMenu() {
+  openModal("メニュー", `
+    <div class="menu-list">
+      <button class="menu-item" onclick="showSaveMenu()">セーブ</button>
+      <button class="menu-item" onclick="showLoadMenu()">ロード</button>
+      <button class="menu-item danger" onclick="showTitleNotice()">タイトルへ戻る</button>
+    </div>
+  `);
+}
+
+function showSaveMenu() {
+  openModal("セーブ", `
+    <div class="slot-list">
+      ${renderSlotButton(1, "save")}
+      ${renderSlotButton(2, "save")}
+      ${renderSlotButton(3, "save")}
+    </div>
+  `);
+}
+
+function showLoadMenu() {
+  openModal("ロード", `
+    <div class="slot-list">
+      ${renderSlotButton(1, "load")}
+      ${renderSlotButton(2, "load")}
+      ${renderSlotButton(3, "load")}
+    </div>
+  `);
+}
+
+function showTitleNotice() {
+  openModal("タイトルへ戻る", `
+    <div class="notice-box">
+      タイトル画面はまだ未実装です。
+
+      今後ここに
+      「はじめから」
+      「つづきから」
+      を追加します。
+    </div>
+  `);
+}
+
+function loadFromSlot(slotNumber) {
+  const data = getSaveData(slotNumber);
+  if (!data) return;
+
+  state.currentId = data.currentId;
+  state.currentRoute = data.currentRoute;
+  state.waiting = true;
+  state.chatLog = data.chatLog ?? [];
+
+  searchHistory.length = 0;
+  (data.searchHistory ?? []).forEach(item => searchHistory.push(item));
+
+  chatLog.innerHTML = "";
+  state.chatLog.forEach(item => {
+    addMessage(item.speaker, item.text, false);
+  });
+
+  closeModal();
+  switchScreen("chat");
+  setInputEnabled(true);
+}
+
+modalCloseButton.addEventListener("click", closeModal);
+modalOverlay.addEventListener("click", event => {
+  if (event.target === modalOverlay) closeModal();
+});
+menuButton.addEventListener("click", showMainMenu);
 
 chatTab.addEventListener("click", () => switchScreen("chat"));
 searchTab.addEventListener("click", () => switchScreen("search"));
