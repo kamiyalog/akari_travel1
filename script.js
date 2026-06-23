@@ -513,7 +513,7 @@ function showMainMenu() {
     <div class="menu-list">
       <button class="menu-item" onclick="showSaveMenu()">セーブ</button>
       <button class="menu-item" onclick="showLoadMenu()">ロード</button>
-      <button class="menu-item danger" onclick="showTitleNotice()">タイトルへ戻る</button>
+      <button class="menu-item danger" onclick="showTitleNotice()">最初から始める</button>
     </div>
   `);
 }
@@ -543,16 +543,8 @@ function showTitleNotice() {
     return;
   }
 
-  localStorage.removeItem(AUTOSAVE_KEY);
-
-  state.currentId = 1;
-  state.currentRoute = "common";
-  state.waiting = false;
-  state.chatLog = [];
-
   location.reload();
 }
-
 function loadFromSlot(slotNumber) {
   const data = getSaveData(slotNumber);
   if (!data) return;
