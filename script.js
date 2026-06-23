@@ -6,7 +6,8 @@ const state = {
   currentId: 1,
   currentRoute: "common",
   waiting: false,
-  chatLog: []
+  chatLog: [],
+  typingElement: null
 };
 
 function sleep(ms) {
@@ -32,6 +33,30 @@ function addMessage(speaker, text) {
   state.chatLog.push({ speaker, text });
 }
 
+function showTyping() {
+  hideTyping();
+
+  const row = document.createElement("div");
+  row.className = "typing-row";
+  row.innerHTML = `
+    <div class="typing-bubble">
+      朱里が入力中
+      <span class="typing-dots"><span>●</span><span>●</span><span>●</span></span>
+    </div>
+  `;
+
+  chatLog.appendChild(row);
+  chatLog.scrollTop = chatLog.scrollHeight;
+  state.typingElement = row;
+}
+
+function hideTyping() {
+  if (state.typingElement) {
+    state.typingElement.remove();
+    state.typingElement = null;
+  }
+}
+
 function setInputEnabled(enabled) {
   state.waiting = enabled;
   playerInput.disabled = !enabled;
@@ -50,13 +75,24 @@ async function playStory(id) {
   state.currentId = id;
   setInputEnabled(false);
 
-  await sleep(node.delay ?? 650);
+  const typingMs = node.typingMs ?? DEFAULT_TYPING_MS;
+
+  if (node.speaker === "akari" && typingMs > 0) {
+    showTyping();
+    await sleep(typingMs);
+    hideTyping();
+  } else if (typingMs > 0) {
+    await sleep(typingMs);
+  }
+
   addMessage(node.speaker, node.text);
 
   if (node.waitInput) {
     setInputEnabled(true);
     return;
   }
+
+  await sleep(node.afterMs ?? DEFAULT_AFTER_MS);
 
   if (node.next) {
     playStory(node.next);
@@ -77,6 +113,15 @@ function includesAny(input, words = []) {
 function findChatReaction(input) {
   const reactions = chatReactions[state.currentRoute] ?? [];
   return reactions.find(item => includesAny(input, item.words));
+}
+
+async function replyFromAkari(text, typingMs = 900) {
+  setInputEnabled(false);
+  showTyping();
+  await sleep(typingMs);
+  hideTyping();
+  addMessage("akari", text);
+  setInputEnabled(true);
 }
 
 function handlePlayerInput() {
@@ -102,11 +147,11 @@ function handlePlayerInput() {
 
   const reaction = findChatReaction(text);
   if (reaction) {
-    addMessage("akari", reaction.reply);
+    replyFromAkari(reaction.reply, 900);
     return;
   }
 
-  addMessage("akari", node.failText ?? "えっと…？ もう一回言ってくれる？");
+  replyFromAkari(node.failText ?? "えっと…？ もう一回言ってくれる？", 1100);
 }
 
 sendButton.addEventListener("click", handlePlayerInput);
