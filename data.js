@@ -115,7 +115,7 @@ const storyData = {
   "16": {
     "speaker": "system",
     "text": "画像送信",
-    "image": "photo_seaside_sign_01.webp",
+    "image": "photo_island_from_beach_01.webp",
     "afterMs": 2000,
     "next": 17
   },
