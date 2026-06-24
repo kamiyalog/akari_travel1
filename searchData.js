@@ -53,7 +53,7 @@ const searchPages = [
   },
   {
     id: "tensho-flow",
-    keywords: ["てんしょうのぎ", "転昇の儀", "くもつ", "供物", ],
+    keywords: ["てんしょうのぎ", "転昇の儀", "くもつ", "供物" ],
     title: "転昇の儀　注意事項(No.7/11)",
     url: "staff-only.example/tensho/notes",
     snippet: "転昇の儀に関する注意事項。東雲生体適応研究所から提供された薬の使用について記載があります。",
