@@ -1,7 +1,7 @@
 const searchPages = [
   {
     id: "kito-bookstore",
-    keywords: ["黄兎書店", "本屋"],
+    keywords: ["黄兎書店", "本屋(No.1/11)"],
     title: "黄兎書店｜お知らせ",
     url: "kito-book.example/news",
     snippet: "【臨時休業のお知らせ】本日は祭りのため、終日休業いたします。",
@@ -10,7 +10,7 @@ const searchPages = [
   {
     id: "ikeike-electric",
     keywords: ["いけいけ電気店"],
-    title: "いけいけ電気店｜店舗情報",
+    title: "いけいけ電気店｜店舗情報(No.2/11)",
     url: "ikeike-denki.example/info",
     snippet: "【店長からのお知らせ】今年も祭の季節がやってきたぜ！！6/23～6/25まで臨時休業！！",
     body: "いけいけ電気店\n\nlocal-electric.example\n\n【店長からのお知らせ】\n\n今年も祭の季節がやってきたぜ！！\n\n店長も祭に参加するから、\n6/23～6/25まで臨時休業！！\n\n海の向こうの島で待ってるぜ！！\n\n※去年は筋肉痛で3日寝込みました"
@@ -18,7 +18,7 @@ const searchPages = [
   {
     id: "mask-rule",
     keywords: ["お面", "おめん", "御面", "仮面", "規則", "きそく", "祭りの規則", "祭の規則", "決まり", "きまり"],
-    title: "祭の規則",
+    title: "祭の規則(No.3/11)",
     url: "archive.example/rules/mask",
     snippet: "参加者は祭りの最中、必ずお面をつけること。面を付けていないものは兎の面を付けるものとする。",
     body: "祭の規則\n\n一、参加者は前祭中に、必ずお面をつけること。\n\n二、■■役の者、並びに■■は兎の面を着けよ。\n\n三、■■■の者、及び■■は狐の面を着けよ。\n\n四、夜の本祭開始までに面を付けていないものは兎の面を付けるものとする。\n\n五、祭が終わるまで、面を外すべからず。\n\n※一部が黒塗りされています。"
@@ -27,7 +27,7 @@ const searchPages = [
     id: "tenrin-map",
     image: "map_island_layout_01.webp",
     keywords: ["転輪祭", "てんりんさい"],
-    title: "転輪祭｜島の地図",
+    title: "転輪祭｜島の地図(No.4/11)",
     url: "tenrin-fes.example/map",
     snippet: "転輪祭会場案内図。祭り広場、本殿、旧施設跡地などが記載されています。",
     theme: "dark",
@@ -36,7 +36,7 @@ const searchPages = [
   {
     id: "boat-ending",
     keywords: ["赤い船", "黄色い船", "赤", "黄色"],
-    title: "祭の終了",
+    title: "祭の終了(No.5/11)",
     url: "local-ritual.example/boat",
     snippet: "関係者各位。一般への公開は固く禁ズ。本祭には二つの終了条件が存在する。",
     theme: "dark",
@@ -45,7 +45,7 @@ const searchPages = [
   {
     id: "ritual-truth",
     keywords: ["黄泉より戻りし兎", "転生を拒みし狐"],
-    title: "祭の真意",
+    title: "祭の真意(No.6/11)",
     url: "hidden-archive.example/tenrin/truth",
     snippet: "転輪祭とは、兎狩り、転昇の儀をもって、失われた巫女の魂を依り代へと移すための儀である。",
     theme: "dark",
@@ -54,7 +54,7 @@ const searchPages = [
   {
     id: "tensho-flow",
     keywords: ["てんしょうのぎ", "転昇の儀", "くもつ", "供物", ],
-    title: "転昇の儀　注意事項",
+    title: "転昇の儀　注意事項(No.7/11)",
     url: "staff-only.example/tensho/notes",
     snippet: "転昇の儀に関する注意事項。東雲生体適応研究所から提供された薬の使用について記載があります。",
     body: "転昇の儀　注意事項\n\n・■■■には、東雲生体適応研究所から提供された薬を、事前に食事へ混ぜて摂取させること。\n\n・■■および■■■は、本殿の奥の間に儀が始まると移送する。\n　■■■は、儀式が始まるまでは蒼の間に安置すること。\n\n・必ず鍵は掛けずに周囲■■まで近寄らないこと。\n\n・場所の詳細は館内マップを確認すること。"
@@ -63,7 +63,7 @@ const searchPages = [
     id: "building-map",
     image: "map_honden_layout_01.webp",
     keywords: ["館内マップ", "館内のご案内", "館内", "蒼の間", "奥の間", "マップ"],
-    title: "館内のご案内",
+    title: "館内のご案内(No.8/11)",
     url: "staff-only.example/building/map",
     snippet: "館内マップを表示します。蒼の間、奥の間、非常通行扉などが記載されています。",
     body: "館内のご案内"
@@ -71,15 +71,15 @@ const searchPages = [
   {
     id: "emergency-door",
     keywords: ["非常通行扉", "警備情報", "扉", "ドア", "警備"],
-    title: "警備情報｜非常通行扉",
+    title: "警備情報｜非常通行扉(No.9/11)",
     url: "staff-only.example/security/door",
     snippet: "転昇の儀が始まるまでは館内外の警備を厳にする。非常通行扉の前には必ず警備員を置くこと。",
     body: "警備情報｜非常通行扉\n\n転昇の儀が始まるまでは館内外の警備を厳にする。\n\n非常通行扉の前には必ず警備員を置くこと。\n\n特に狐面の対象者が蒼の間を出た場合、非常通行扉へ向かう可能性がある。\n警備員は対象者を発見次第、速やかに確保すること。"
   },
   {
     id: "miko-record",
-    keywords: ["巫女", "みこ", "□□□の巫女"],
-    title: "□□□の巫女",
+    keywords: ["巫女", "みこ"],
+    title: "□□□の巫女(No.11/11)",
     url: "damaged-archive.example/miko",
     snippet: "ファイルが破損しています。□□□の巫女は、□□神に仕えるものとされる。",
     theme: "dark",
@@ -87,12 +87,11 @@ const searchPages = [
   },
   {
     id: "shinonome-lab",
-    keywords: ["東雲生体適応研究所", "東雲", "しののめ", "研究所", "生体適応", "精神同調", "記憶継承", "食品依存形成機序", "Project Rebirth", "リバース"],
-    title: "東雲生体適応研究所｜SHINONOME BIO ADAPTATION LABORATORY",
+    keywords: ["東雲生体適応研究所"],
+    title: "東雲生体適応研究所｜SHINONOME BIO ADAPTATION LABORATORY(No.10/11)",
     url: "shinonome-bio.example/closed",
     snippet: "Closed. 当研究所は現在、全ての研究活動を停止しております。最終更新：2026/06/21",
-    body: "東雲生体適応研究所\n\nSHINONOME\nBIO ADAPTATION\nLABORATORY\n\n────────────────────\n\nClosed.\n\n当研究所は現在、\n全ての研究活動を停止しております。\n\n長年にわたりご支援いただき、\n誠にありがとうございました。\n\n────────────────────\n\n我々は、\n人の願いを叶えるための\n研究を続けてまいりました。\n\n失われたものを取り戻したい。\n\n叶わなかった願いを叶えたい。\n\nその想いは、\n今も変わりません。\n\n────────────────────\n\n事業内容\n\n・生体適応研究\n\n・精神同調研究\n\n・記憶継承研究\n\n・食品依存形成機序研究\n\n────────────────────\n\n設立\n\n2003年\n\n\n閉鎖\n\n2026年6月\n\n\n最終更新\n\n2026/06/21\n\n────────────────────\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n研究は終了した。\n\nしかし、\n願いを叶えたい者は\n今も存在する。\n\n魂は失われない。\n\n器さえあれば、\n人は何度でも戻る。\n\n\n\n―― Project Rebirth"
-  }
+    body: "東雲生体適応研究所\n\nSHINONOME\nBIO ADAPTATION\nLABORATORY\n\n────────────────────\n\nClosed.\n\n当研究所は現在、\n全ての研究活動を停止しております。\n\n長年にわたりご支援いただき、\n誠にありがとうございました。\n\n────────────────────\n\n我々は、\n人の願いを叶えるための\n研究を続けてまいりました。\n\n失われたものを取り戻したい。\n\n叶わなかった願いを叶えたい。\n\nその想いは、\n今も変わりません。\n\n────────────────────\n\n事業内容\n\n・生体適応研究\n\n・精神同調研究\n\n・記憶継承研究\n\n・食品依存形成機序研究\n\n────────────────────\n\n設立\n\n2003年\n\n\n閉鎖\n\n2026年6月\n\n\n最終更新\n
 ];
 
 const searchHistory = [];
