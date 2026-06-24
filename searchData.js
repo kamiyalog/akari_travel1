@@ -1,8 +1,8 @@
 const searchPages = [
   {
     id: "kito-bookstore",
-    keywords: ["黄兎書店", "本屋(No.1/11)"],
-    title: "黄兎書店｜お知らせ",
+    keywords: ["黄兎書店", "本屋"],
+    title: "黄兎書店｜お知らせ(No.1/11)",
     url: "kito-book.example/news",
     snippet: "【臨時休業のお知らせ】本日は祭りのため、終日休業いたします。",
     body: "黄兎書店からのお知らせ\n\n本日は祭りのため、終日休業いたします。\n海岸近くの島で開催されますため、周辺店舗も休業となります。\n\nなお、祭りの詳細についてのお問い合わせはご遠慮ください。\n\n店主"
