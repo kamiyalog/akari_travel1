@@ -6,15 +6,22 @@ body {
   background: #d7e5f3;
 }
 
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
 .app {
   max-width: 430px;
-  height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
   margin: 0 auto;
   background: #8fb7dc;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
-
 .chat-header {
   height: 64px;
   background: #27384a;
@@ -24,6 +31,19 @@ body {
   justify-content: space-between;
   padding: 0 14px;
 }
+.chat-header,
+.tab-bar,
+.input-area {
+  flex-shrink: 0;
+}
+
+.chat-log,
+.search-page {
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 
 .chat-name { font-weight: 700; font-size: 18px; }
 .chat-status { font-size: 12px; opacity: .75; }
