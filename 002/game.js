@@ -12,11 +12,19 @@
   const LOGIN_PAGE_KEY = "TOP";
   const MANAGEMENT_PAGE_KEY = "1";
   const END_PAGE_KEYS = new Set(["35", "36"]);
+  // ユーザー公開時は false に変更すると、本編確認用パスワードを無効化できます。
+  const GAME_ACCESS_REQUIRED = true;
+  const GAME_ACCESS_CODE = "1001";
+  const GAME_ACCESS_SESSION_KEY = "jada.gameAccessUnlocked.v1";
   const INITIAL_DISCOVERED = gameData.initialPageNumbers.map(String);
   const audioRecords = gameData.audioRecords;
   const credits = gameData.credits ?? [];
   const recordByPage = new Map(audioRecords.map((record) => [String(record.page), record]));
   const validRecordPages = new Set(recordByPage.keys());
+  const SPOILER_ROLE_MASKS = Object.freeze({
+    MORITAKA: "■■ ■",
+    AKARI: "■■ ■■",
+  });
   const STORAGE = {
     discovered: "jada.discovered.v1",
     viewed: "jada.viewed.v1",
@@ -38,6 +46,22 @@
       window.localStorage.setItem(key, value);
     } catch {
       memoryStorage.set(key, value);
+    }
+  }
+
+  function sessionStorageGet(key) {
+    try {
+      return window.sessionStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
+  function sessionStorageSet(key, value) {
+    try {
+      window.sessionStorage.setItem(key, value);
+    } catch {
+      // file:// 環境などで保存できない場合も、解除後のゲーム表示は継続する。
     }
   }
 
@@ -266,6 +290,62 @@
       </main>`;
   }
 
+  function gameAccessPage(message = "") {
+    return `
+      <main class="game-access-page" id="game-access-page">
+        <section class="game-access-card" aria-labelledby="game-access-title">
+          <div class="game-access-mark">JADA</div>
+          <p class="eyebrow">GAME PREVIEW / RESTRICTED ACCESS</p>
+          <h1 id="game-access-title">ゲーム本編 確認用</h1>
+          <p class="game-access-copy">お伝えした4桁のパスワードを入力してください。</p>
+          <form class="game-access-form" id="game-access-form">
+            <label for="game-access-input">ACCESS CODE</label>
+            <input
+              id="game-access-input"
+              type="password"
+              inputmode="numeric"
+              maxlength="4"
+              autocomplete="off"
+              required
+            >
+            <button type="submit" id="game-access-button">ゲーム本編を開く</button>
+            <p class="game-access-message" id="game-access-message" role="alert" aria-live="polite">${escapeHtml(message)}</p>
+          </form>
+          <p class="game-access-footnote">PRE-RELEASE BUILD / AUTHORIZED REVIEW ONLY</p>
+        </section>
+      </main>`;
+  }
+
+  function renderGameAccess() {
+    document.title = "本編アクセス確認｜日本音声データ管理システム";
+    app.innerHTML = gameAccessPage();
+
+    const accessPage = document.getElementById("game-access-page");
+    const accessForm = document.getElementById("game-access-form");
+    const accessInput = document.getElementById("game-access-input");
+    const accessButton = document.getElementById("game-access-button");
+    const accessMessage = document.getElementById("game-access-message");
+    if (!accessPage || !accessForm || !accessInput || !accessButton || !accessMessage) return;
+
+    accessForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (accessInput.value !== GAME_ACCESS_CODE) {
+        accessMessage.textContent = "パスワードが違います。";
+        accessInput.select();
+        return;
+      }
+
+      sessionStorageSet(GAME_ACCESS_SESSION_KEY, "1");
+      accessButton.disabled = true;
+      accessMessage.textContent = "";
+      accessPage.classList.add("is-leaving");
+      const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+      window.setTimeout(startGame, reducedMotion ? 0 : 420);
+    });
+
+    accessInput.focus();
+  }
+
   function managementPage() {
     const records = state.discovered
       .map((page) => recordByPage.get(page))
@@ -434,7 +514,7 @@
       </main>`;
   }
 
-  function creditsModal() {
+  function creditsModal(revealSpoilers = false) {
     if (!state.creditsOpen) return "";
 
     return `
@@ -448,14 +528,19 @@
             <button class="credits-close" type="button" data-close-credits aria-label="クレジットを閉じる">×</button>
           </div>
           <dl class="credits-list">
-            ${credits.map((credit) => `
-              <div>
-                <dt>${escapeHtml(credit.role)}</dt>
-                <dd>${escapeHtml(credit.voiceActor)}</dd>
-              </div>`).join("")}
+            ${credits.map((credit) => {
+              const displayedRole = revealSpoilers
+                ? credit.role
+                : (SPOILER_ROLE_MASKS[credit.audioPrefix] ?? credit.role);
+              return `
+                <div>
+                  <dt>${escapeHtml(displayedRole)}</dt>
+                  <dd>${escapeHtml(credit.voiceActor)}</dd>
+                </div>`;
+            }).join("")}
           </dl>
           <dl class="credit-production">
-            <div><dt>制作</dt><dd>久瀬（高無メイ）</dd></div>
+            <div><dt>制作</dt><dd>久瀬</dd></div>
           </dl>
           <button class="credits-dismiss" type="button" data-close-credits>閉じる</button>
         </section>
@@ -573,7 +658,7 @@
 
         ${main}
         ${confirmModal()}
-        ${creditsModal()}
+        ${creditsModal(END_PAGE_KEYS.has(state.current))}
 
         <button class="history-toggle" id="history-toggle" type="button" aria-label="${newHistoryCount ? `閲覧履歴を開く（新規${newHistoryCount}件）` : "閲覧履歴を開く"}">
           ${diskIcon()}${newHistoryCount ? `<span class="history-badge">${newHistoryCount}</span>` : ""}
@@ -885,7 +970,19 @@
     }
   }
 
-  window.addEventListener("hashchange", syncPageFromRoute);
-  persistState();
-  render();
+  let gameStarted = false;
+
+  function startGame() {
+    if (gameStarted) return;
+    gameStarted = true;
+    window.addEventListener("hashchange", syncPageFromRoute);
+    persistState();
+    render();
+  }
+
+  if (!GAME_ACCESS_REQUIRED || sessionStorageGet(GAME_ACCESS_SESSION_KEY) === "1") {
+    startGame();
+  } else {
+    renderGameAccess();
+  }
 })();

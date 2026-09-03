@@ -1623,6 +1623,135 @@ a:focus-visible {
   background-size: auto, 28px 28px, 28px 28px, auto;
 }
 
+.game-access-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 32px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  color: #d3dfdc;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(49, 83, 78, 0.25), transparent 44%),
+    linear-gradient(rgba(112, 139, 133, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(112, 139, 133, 0.025) 1px, transparent 1px),
+    #060a0b;
+  background-size: auto, 28px 28px, 28px 28px, auto;
+}
+
+.game-access-page::before {
+  content: "PRE-RELEASE BUILD / AUTHORIZED REVIEW ONLY";
+  position: absolute;
+  right: 24px;
+  bottom: 18px;
+  color: rgba(148, 174, 168, 0.25);
+  font: 8px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.16em;
+}
+
+.game-access-card {
+  position: relative;
+  z-index: 1;
+  width: min(480px, 100%);
+  padding: 38px;
+  border: 1px solid #314345;
+  border-top: 5px solid #31504c;
+  background: rgba(10, 16, 17, 0.97);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.48);
+}
+
+.game-access-mark {
+  width: 58px;
+  height: 58px;
+  margin-bottom: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #66817b;
+  box-shadow: inset 0 0 0 3px #0a1011, inset 0 0 0 4px rgba(183, 207, 201, 0.2);
+  color: #cbdad6;
+  font: 700 11px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.12em;
+}
+
+.game-access-card h1 {
+  margin: 0;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: clamp(26px, 6vw, 34px);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.game-access-copy {
+  margin: 18px 0 26px;
+  color: #8fa39e;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.game-access-form {
+  display: grid;
+  gap: 10px;
+}
+
+.game-access-form label {
+  color: #78908a;
+  font: 700 9px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.14em;
+}
+
+.game-access-form input {
+  width: 100%;
+  height: 50px;
+  padding: 0 14px;
+  border: 1px solid #3a5051;
+  border-radius: 0;
+  color: #d8e4e1;
+  background: #0d1516;
+  font: 600 16px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.22em;
+}
+
+.game-access-form button {
+  min-height: 50px;
+  margin-top: 6px;
+  border: 1px solid #496661;
+  color: #eef4f1;
+  background: #17312e;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.game-access-form button:hover {
+  border-color: #67857f;
+  background: #20413d;
+}
+
+.game-access-form button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.game-access-message {
+  min-height: 1.6em;
+  margin: 2px 0 0;
+  color: #d46d75;
+  font-size: 11px;
+}
+
+.game-access-footnote {
+  margin: 18px 0 0;
+  color: #40534f;
+  font: 7px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.15em;
+  text-align: center;
+}
+
+.game-access-page.is-leaving {
+  animation: login-fade-out 420ms ease forwards;
+}
+
 .login-page::before {
   content: "INTERNAL NETWORK / AUTHORIZED PERSONNEL ONLY";
   position: absolute;
@@ -2020,8 +2149,8 @@ a:focus-visible {
 }
 
 .credit-production dd {
-  color: #f0d39c;
-  font-weight: 600;
+  color: #dce5e2;
+  font-weight: 400;
 }
 
 .credits-dismiss {
@@ -2068,16 +2197,13 @@ a:focus-visible {
   color: #5c706a;
 }
 
-.good-mode .credits-list dd {
+.good-mode .credits-list dd,
+.good-mode .credit-production dd {
   color: #1e2d28;
 }
 
 .good-mode .credit-production {
   border-color: #7e9991;
-}
-
-.good-mode .credit-production dd {
-  color: #6b4b19;
 }
 
 .good-mode .credits-dismiss {
@@ -2092,6 +2218,9 @@ a:focus-visible {
 
 @media (max-width: 760px) {
   .app-frame { padding-top: 128px; }
+  .game-access-page { padding: 18px; }
+  .game-access-card { padding: 28px 20px; }
+  .game-access-page::before { right: 16px; bottom: 12px; font-size: 6px; }
   .login-page { padding: 18px; }
   .login-card { padding: 28px 20px; }
   .login-brand { align-items: flex-start; }
