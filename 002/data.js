@@ -6,19 +6,19 @@
   // 声優名が決定したら、各 voiceActor の「未定」を名前へ変更してください。
   // ゲーム内クレジットと声優確認ページの両方へ反映されます。
   const credits = [
-    { role: "龍牙", voiceActor: "未定", audioPrefix: "RYUGA" },
-    { role: "思想犯", voiceActor: "未定", audioPrefix: "SHISOHAN" },
-    { role: "藤崎俊子", voiceActor: "未定", audioPrefix: "TOSHIKO" },
-    { role: "篠田明", voiceActor: "未定", audioPrefix: "SHINODA" },
-    { role: "明坂朱里", voiceActor: "未定", audioPrefix: "AKARI" },
-    { role: "タカヤ", voiceActor: "未定", audioPrefix: "TAKAYA" },
-    { role: "管理スタッフ", voiceActor: "未定", audioPrefix: "KANRI" },
-    { role: "藤崎ルミ", voiceActor: "未定", audioPrefix: "RUMI" },
-    { role: "クーエル店員", voiceActor: "未定", audioPrefix: "QUEL" },
-    { role: "三井順二", voiceActor: "未定", audioPrefix: "MITSUI" },
-    { role: "病院職員", voiceActor: "未定", audioPrefix: "HOSPITAL" },
-    { role: "内藤美樹", voiceActor: "未定", audioPrefix: "NAITO" },
-    { role: "森高宵", voiceActor: "未定", audioPrefix: "MORITAKA" },
+    { role: "龍牙", voiceActor: "なんでもボイス", audioPrefix: "RYUGA" },
+    { role: "思想犯", voiceActor: "ばななー🍌", audioPrefix: "SHISOHAN" },
+    { role: "藤崎俊子", voiceActor: "いけどゆき", audioPrefix: "TOSHIKO" },
+    { role: "篠田明", voiceActor: "間宮耿太郎", audioPrefix: "SHINODA" },
+    { role: "明坂朱里", voiceActor: "つむり", audioPrefix: "AKARI" },
+    { role: "タカヤ", voiceActor: "蛍烏賊ギン", audioPrefix: "TAKAYA" },
+    { role: "管理スタッフ", voiceActor: "ロア", audioPrefix: "KANRI" },
+    { role: "藤崎ルミ", voiceActor: "滝沢いたち", audioPrefix: "RUMI" },
+    { role: "クーエル店員", voiceActor: "星那 葉月", audioPrefix: "QUEL" },
+    { role: "三井順二", voiceActor: "蛇蠍・ザ・ストーリーテラー", audioPrefix: "MITSUI" },
+    { role: "病院職員", voiceActor: "永井あめ", audioPrefix: "HOSPITAL" },
+    { role: "内藤美樹", voiceActor: "ちそら", audioPrefix: "NAITO" },
+    { role: "森高宵", voiceActor: "ねこのたまむら", audioPrefix: "MORITAKA" },
   ];
   
   const audioRecords = [
