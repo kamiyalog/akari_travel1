@@ -25,6 +25,41 @@
     MORITAKA: "■■ ■",
     AKARI: "■■ ■■",
   });
+  // 音声だけを手掛かりに検索できるよう、全検索語の読みを登録する。
+  // カタカナは normalizeTerm でひらがなへ統一されるため、両方の入力に対応する。
+  const SEARCH_TERM_READINGS = Object.freeze({
+    "タカヤ": "たかや",
+    "誘拐": "ゆうかい",
+    "南沖島": "みなみおきしま",
+    "六池ジャンクション": "むついけじゃんくしょん",
+    "藤崎ルミ": "ふじさきるみ",
+    "ストルーガ": "すとるーが",
+    "クーエル": "くーえる",
+    "警察": "けいさつ",
+    "高橋": "たかはし",
+    "高橋亮": "たかはしりょう",
+    "新東病院": "しんとうびょういん",
+    "内藤": "ないとう",
+    "青木": "あおき",
+    "内藤美樹": "ないとうみき",
+    "ドラゴン": "どらごん",
+    "生贄": "いけにえ",
+    "教授": "きょうじゅ",
+    "リゾート": "りぞーと",
+    "儀式": "ぎしき",
+    "伊炬町": "いこちょう",
+    "依り代": "よりしろ",
+    "チラシ": "ちらし",
+    "洞窟": "どうくつ",
+    "北の洞窟": "きたのどうくつ",
+    "ミドー": "みどー",
+    "忌孤の民": "いこのたみ",
+    "巫女": "みこ",
+    "朱里": "あかり",
+    "降狐の儀": "こうこのぎ",
+    "明坂朱里": "あけさかあかり",
+    "森高宵": "もりたかしょう",
+  });
   const STORAGE = {
     discovered: "jada.discovered.v1",
     viewed: "jada.viewed.v1",
@@ -91,7 +126,21 @@
   }
 
   function normalizeTerm(value) {
-    return value.normalize("NFKC").replace(/[\s　]+/g, "").toLowerCase();
+    return value
+      .normalize("NFKC")
+      .replace(/[\s　]+/g, "")
+      .toLowerCase()
+      .replace(/[ァ-ヶ]/g, (character) => (
+        String.fromCharCode(character.charCodeAt(0) - 0x60)
+      ));
+  }
+
+  function recordMatchesSearch(record, needle) {
+    return record.searchTerms.some((term) => {
+      if (normalizeTerm(term) === needle) return true;
+      const reading = SEARCH_TERM_READINGS[term];
+      return Boolean(reading && normalizeTerm(reading) === needle);
+    });
   }
 
   function escapeHtml(value) {
@@ -737,9 +786,7 @@
       return;
     }
 
-    const matches = audioRecords.filter((record) =>
-      record.searchTerms.some((term) => normalizeTerm(term) === needle),
-    );
+    const matches = audioRecords.filter((record) => recordMatchesSearch(record, needle));
 
     if (!matches.length) {
       state.notice = `「${state.query.trim()}」に一致する音声データはありません。`;
