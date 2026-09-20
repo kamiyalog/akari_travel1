@@ -2044,70 +2044,24 @@ a:focus-visible {
 .good-novel-scene {
   position: absolute;
   z-index: 0;
-  inset: -2%;
+  inset: 0;
   overflow: hidden;
-  transform: scale(1.02);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .good-novel-scene::before,
 .good-novel-scene::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
+  display: none;
 }
 
 .scene-underground-office .good-novel-scene {
-  background:
-    linear-gradient(0deg, rgba(0, 0, 0, 0.95) 0 18%, transparent 47%),
-    radial-gradient(ellipse at 51% 18%, rgba(74, 115, 113, 0.21), transparent 34%),
-    linear-gradient(90deg, #071011 0 12%, #101b1d 12% 13%, #071010 13% 87%, #101b1d 87% 88%, #050a0b 88% 100%);
-}
-
-.scene-underground-office .good-novel-scene::before {
-  inset: 13% 17% 35%;
-  border: 1px solid rgba(140, 181, 177, 0.13);
-  background:
-    linear-gradient(90deg, transparent 49.8%, rgba(143, 181, 177, 0.12) 50%, transparent 50.2%),
-    linear-gradient(rgba(92, 126, 124, 0.08) 1px, transparent 1px);
-  background-size: auto, 100% 25%;
-  box-shadow: 0 0 80px rgba(39, 81, 80, 0.08);
-}
-
-.scene-underground-office .good-novel-scene::after {
-  left: 7%;
-  right: 7%;
-  bottom: 15%;
-  height: 22%;
-  border-top: 2px solid rgba(117, 150, 147, 0.16);
-  background: linear-gradient(180deg, #0a1112, #030506);
-  transform: perspective(520px) rotateX(58deg);
-  transform-origin: bottom;
+  background-image: url("./assets/good-ending/underground-office.png");
 }
 
 .scene-underground-corridor .good-novel-scene {
-  background:
-    radial-gradient(ellipse at 50% 21%, rgba(109, 151, 148, 0.24), transparent 16%),
-    linear-gradient(74deg, #030607 0 26%, transparent 26.2%),
-    linear-gradient(-74deg, #030607 0 26%, transparent 26.2%),
-    linear-gradient(90deg, #091011, #192627 50%, #091011);
-}
-
-.scene-underground-corridor .good-novel-scene::before {
-  inset: 8% 27% 0;
-  border: 1px solid rgba(150, 185, 180, 0.16);
-  background:
-    linear-gradient(90deg, transparent 47%, rgba(151, 186, 182, 0.1) 50%, transparent 53%),
-    linear-gradient(180deg, transparent 0 74%, rgba(0, 0, 0, 0.78));
-  clip-path: polygon(35% 0, 65% 0, 100% 100%, 0 100%);
-}
-
-.scene-underground-corridor .good-novel-scene::after {
-  left: 35%;
-  right: 35%;
-  top: 12%;
-  height: 2px;
-  background: rgba(211, 229, 222, 0.32);
-  box-shadow: 0 0 34px 10px rgba(114, 159, 154, 0.12);
+  background-image: url("./assets/good-ending/underground-corridor.png");
 }
 
 .scene-blackout .good-novel-scene {
@@ -2115,78 +2069,15 @@ a:focus-visible {
 }
 
 .scene-pre-dawn-alley .good-novel-scene {
-  background:
-    linear-gradient(90deg, rgba(3, 6, 10, 0.98) 0 21%, transparent 21.3% 78%, rgba(3, 6, 10, 0.98) 78.3% 100%),
-    radial-gradient(ellipse at 52% 66%, rgba(211, 181, 164, 0.32), transparent 24%),
-    linear-gradient(180deg, #0b1220 0%, #172738 48%, #927d77 73%, #17171a 74% 100%);
-}
-
-.scene-pre-dawn-alley .good-novel-scene::before {
-  left: 20%;
-  right: 20%;
-  bottom: -9%;
-  height: 48%;
-  background: linear-gradient(90deg, transparent, rgba(191, 181, 174, 0.13) 48% 52%, transparent);
-  clip-path: polygon(35% 0, 65% 0, 100% 100%, 0 100%);
-}
-
-.scene-pre-dawn-alley .good-novel-scene::after {
-  inset: 12% 5% auto;
-  height: 40%;
-  background:
-    linear-gradient(90deg, #06090d 0 13%, transparent 13% 87%, #06090d 87%),
-    repeating-linear-gradient(90deg, transparent 0 13%, rgba(190, 213, 216, 0.08) 13.2% 14%, transparent 14.2% 24%);
+  background-image: url("./assets/good-ending/pre-dawn-alley.png");
 }
 
 .scene-police-early .good-novel-scene {
-  background:
-    linear-gradient(0deg, rgba(23, 29, 31, 0.74) 0 19%, transparent 45%),
-    linear-gradient(90deg, rgba(18, 28, 32, 0.88) 0 16%, transparent 16% 84%, rgba(18, 28, 32, 0.88) 84%),
-    radial-gradient(ellipse at 55% 28%, rgba(207, 223, 224, 0.4), transparent 36%),
-    linear-gradient(180deg, #4c6068, #27363c 64%, #151b1e);
-}
-
-.scene-police-early .good-novel-scene::before,
-.scene-police-morning .good-novel-scene::before {
-  inset: 8% 22% 36%;
-  border: 8px solid rgba(15, 29, 33, 0.72);
-  background:
-    linear-gradient(90deg, transparent 49%, rgba(20, 38, 43, 0.56) 49% 51%, transparent 51%),
-    linear-gradient(180deg, transparent 49%, rgba(20, 38, 43, 0.48) 49% 51%, transparent 51%);
-  box-shadow: 0 20px 80px rgba(183, 213, 216, 0.11);
-}
-
-.scene-police-early .good-novel-scene::after,
-.scene-police-morning .good-novel-scene::after {
-  left: 6%;
-  right: 6%;
-  bottom: 11%;
-  height: 25%;
-  border-top: 2px solid rgba(218, 229, 225, 0.18);
-  background: linear-gradient(180deg, rgba(31, 42, 44, 0.74), rgba(8, 11, 12, 0.96));
-  transform: perspective(620px) rotateX(61deg);
-  transform-origin: bottom;
+  background-image: url("./assets/good-ending/police-station-early.png");
 }
 
 .scene-police-morning .good-novel-scene {
-  background:
-    linear-gradient(0deg, rgba(36, 42, 43, 0.58) 0 18%, transparent 43%),
-    linear-gradient(90deg, rgba(57, 67, 67, 0.56) 0 14%, transparent 14% 86%, rgba(57, 67, 67, 0.56) 86%),
-    radial-gradient(ellipse at 57% 24%, rgba(255, 255, 250, 0.96), transparent 42%),
-    linear-gradient(180deg, #c9d8d9, #93a8aa 66%, #4f5c5d);
-}
-
-.scene-police-morning .good-novel-scene::before {
-  border-color: rgba(75, 92, 94, 0.62);
-  background:
-    linear-gradient(90deg, transparent 49%, rgba(84, 104, 106, 0.56) 49% 51%, transparent 51%),
-    linear-gradient(180deg, transparent 49%, rgba(84, 104, 106, 0.48) 49% 51%, transparent 51%);
-  box-shadow: 0 14px 90px rgba(249, 244, 223, 0.34);
-}
-
-.scene-police-morning .good-novel-scene::after {
-  border-top-color: rgba(230, 238, 235, 0.44);
-  background: linear-gradient(180deg, rgba(85, 98, 98, 0.63), rgba(28, 34, 34, 0.9));
+  background-image: url("./assets/good-ending/police-station-morning.png");
 }
 
 .good-novel-vignette {
