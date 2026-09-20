@@ -1950,14 +1950,14 @@ a:focus-visible {
   background: #203334;
 }
 
-.app-frame.good-mode {
+.app-frame.good-report-mode {
   color: #18231f;
   background:
     radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.94), transparent 46%),
     #edf2ef;
 }
 
-.good-mode .end-document {
+.good-report-mode .end-document {
   border-color: #aab7b1;
   border-top-color: #49776b;
   color: #18231f;
@@ -1967,59 +1967,578 @@ a:focus-visible {
   box-shadow: 0 22px 50px rgba(35, 58, 50, 0.14);
 }
 
-.good-mode .record-topline,
-.good-mode .eyebrow {
+.good-report-mode .record-topline,
+.good-report-mode .eyebrow {
   color: #5b716b;
 }
 
-.good-mode .end-document h1,
-.good-mode .ending-actions {
+.good-report-mode .end-document h1,
+.good-report-mode .ending-actions {
   border-color: #b8c3be;
 }
 
-.good-mode .end-stamp {
+.good-report-mode .end-stamp {
   border-color: #4f8275;
   color: #3c7163;
   opacity: 0.68;
 }
 
-.good-mode .ending-actions a {
+.good-report-mode .ending-actions a {
   border-color: #34695c;
+  color: #ffffff;
   background: #285f52;
 }
 
-.good-mode .ending-actions a:hover {
+.good-report-mode .ending-actions a:hover {
   background: #1e4d42;
 }
 
-.good-mode .ending-actions button {
+.good-report-mode .ending-actions button,
+.good-report-mode .ending-actions .ending-return {
   border-color: #718980;
   color: #294b42;
   background: transparent;
 }
 
-.good-mode .ending-actions .ending-return {
-  border-color: #718980;
-  color: #294b42;
-  background: transparent;
-}
-
-.good-mode .ending-actions button:hover {
+.good-report-mode .ending-actions button:hover,
+.good-report-mode .ending-actions .ending-return:hover {
   background: #e5ece8;
 }
 
-.good-mode .ending-actions .ending-return:hover {
-  background: #e5ece8;
-}
-
-.good-mode .site-footer {
+.good-report-mode .site-footer {
   border-top-color: #c5cfca;
   color: #60716b;
   background: #e2e9e5;
 }
 
-.good-mode .site-footer strong {
+.good-report-mode .site-footer strong {
   color: #3e5a52;
+}
+
+.app-frame.good-mode.good-novel-mode {
+  height: 100dvh;
+  min-height: 100svh;
+  padding-top: 0;
+  overflow: hidden;
+  color: #f1ede7;
+  background: #030405;
+}
+
+.good-novel-screen {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100svh;
+  overflow: hidden;
+  color: #f3eee8;
+  background: #040607;
+  cursor: pointer;
+}
+
+.good-novel-screen:focus-visible {
+  outline: 2px solid rgba(220, 190, 163, 0.8);
+  outline-offset: -2px;
+}
+
+.good-novel-scene {
+  position: absolute;
+  z-index: 0;
+  inset: -2%;
+  overflow: hidden;
+  transform: scale(1.02);
+}
+
+.good-novel-scene::before,
+.good-novel-scene::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.scene-underground-office .good-novel-scene {
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.95) 0 18%, transparent 47%),
+    radial-gradient(ellipse at 51% 18%, rgba(74, 115, 113, 0.21), transparent 34%),
+    linear-gradient(90deg, #071011 0 12%, #101b1d 12% 13%, #071010 13% 87%, #101b1d 87% 88%, #050a0b 88% 100%);
+}
+
+.scene-underground-office .good-novel-scene::before {
+  inset: 13% 17% 35%;
+  border: 1px solid rgba(140, 181, 177, 0.13);
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(143, 181, 177, 0.12) 50%, transparent 50.2%),
+    linear-gradient(rgba(92, 126, 124, 0.08) 1px, transparent 1px);
+  background-size: auto, 100% 25%;
+  box-shadow: 0 0 80px rgba(39, 81, 80, 0.08);
+}
+
+.scene-underground-office .good-novel-scene::after {
+  left: 7%;
+  right: 7%;
+  bottom: 15%;
+  height: 22%;
+  border-top: 2px solid rgba(117, 150, 147, 0.16);
+  background: linear-gradient(180deg, #0a1112, #030506);
+  transform: perspective(520px) rotateX(58deg);
+  transform-origin: bottom;
+}
+
+.scene-underground-corridor .good-novel-scene {
+  background:
+    radial-gradient(ellipse at 50% 21%, rgba(109, 151, 148, 0.24), transparent 16%),
+    linear-gradient(74deg, #030607 0 26%, transparent 26.2%),
+    linear-gradient(-74deg, #030607 0 26%, transparent 26.2%),
+    linear-gradient(90deg, #091011, #192627 50%, #091011);
+}
+
+.scene-underground-corridor .good-novel-scene::before {
+  inset: 8% 27% 0;
+  border: 1px solid rgba(150, 185, 180, 0.16);
+  background:
+    linear-gradient(90deg, transparent 47%, rgba(151, 186, 182, 0.1) 50%, transparent 53%),
+    linear-gradient(180deg, transparent 0 74%, rgba(0, 0, 0, 0.78));
+  clip-path: polygon(35% 0, 65% 0, 100% 100%, 0 100%);
+}
+
+.scene-underground-corridor .good-novel-scene::after {
+  left: 35%;
+  right: 35%;
+  top: 12%;
+  height: 2px;
+  background: rgba(211, 229, 222, 0.32);
+  box-shadow: 0 0 34px 10px rgba(114, 159, 154, 0.12);
+}
+
+.scene-blackout .good-novel-scene {
+  background: radial-gradient(circle at 50% 40%, #080b0c, #000 67%);
+}
+
+.scene-pre-dawn-alley .good-novel-scene {
+  background:
+    linear-gradient(90deg, rgba(3, 6, 10, 0.98) 0 21%, transparent 21.3% 78%, rgba(3, 6, 10, 0.98) 78.3% 100%),
+    radial-gradient(ellipse at 52% 66%, rgba(211, 181, 164, 0.32), transparent 24%),
+    linear-gradient(180deg, #0b1220 0%, #172738 48%, #927d77 73%, #17171a 74% 100%);
+}
+
+.scene-pre-dawn-alley .good-novel-scene::before {
+  left: 20%;
+  right: 20%;
+  bottom: -9%;
+  height: 48%;
+  background: linear-gradient(90deg, transparent, rgba(191, 181, 174, 0.13) 48% 52%, transparent);
+  clip-path: polygon(35% 0, 65% 0, 100% 100%, 0 100%);
+}
+
+.scene-pre-dawn-alley .good-novel-scene::after {
+  inset: 12% 5% auto;
+  height: 40%;
+  background:
+    linear-gradient(90deg, #06090d 0 13%, transparent 13% 87%, #06090d 87%),
+    repeating-linear-gradient(90deg, transparent 0 13%, rgba(190, 213, 216, 0.08) 13.2% 14%, transparent 14.2% 24%);
+}
+
+.scene-police-early .good-novel-scene {
+  background:
+    linear-gradient(0deg, rgba(23, 29, 31, 0.74) 0 19%, transparent 45%),
+    linear-gradient(90deg, rgba(18, 28, 32, 0.88) 0 16%, transparent 16% 84%, rgba(18, 28, 32, 0.88) 84%),
+    radial-gradient(ellipse at 55% 28%, rgba(207, 223, 224, 0.4), transparent 36%),
+    linear-gradient(180deg, #4c6068, #27363c 64%, #151b1e);
+}
+
+.scene-police-early .good-novel-scene::before,
+.scene-police-morning .good-novel-scene::before {
+  inset: 8% 22% 36%;
+  border: 8px solid rgba(15, 29, 33, 0.72);
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(20, 38, 43, 0.56) 49% 51%, transparent 51%),
+    linear-gradient(180deg, transparent 49%, rgba(20, 38, 43, 0.48) 49% 51%, transparent 51%);
+  box-shadow: 0 20px 80px rgba(183, 213, 216, 0.11);
+}
+
+.scene-police-early .good-novel-scene::after,
+.scene-police-morning .good-novel-scene::after {
+  left: 6%;
+  right: 6%;
+  bottom: 11%;
+  height: 25%;
+  border-top: 2px solid rgba(218, 229, 225, 0.18);
+  background: linear-gradient(180deg, rgba(31, 42, 44, 0.74), rgba(8, 11, 12, 0.96));
+  transform: perspective(620px) rotateX(61deg);
+  transform-origin: bottom;
+}
+
+.scene-police-morning .good-novel-scene {
+  background:
+    linear-gradient(0deg, rgba(36, 42, 43, 0.58) 0 18%, transparent 43%),
+    linear-gradient(90deg, rgba(57, 67, 67, 0.56) 0 14%, transparent 14% 86%, rgba(57, 67, 67, 0.56) 86%),
+    radial-gradient(ellipse at 57% 24%, rgba(255, 255, 250, 0.96), transparent 42%),
+    linear-gradient(180deg, #c9d8d9, #93a8aa 66%, #4f5c5d);
+}
+
+.scene-police-morning .good-novel-scene::before {
+  border-color: rgba(75, 92, 94, 0.62);
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(84, 104, 106, 0.56) 49% 51%, transparent 51%),
+    linear-gradient(180deg, transparent 49%, rgba(84, 104, 106, 0.48) 49% 51%, transparent 51%);
+  box-shadow: 0 14px 90px rgba(249, 244, 223, 0.34);
+}
+
+.scene-police-morning .good-novel-scene::after {
+  border-top-color: rgba(230, 238, 235, 0.44);
+  background: linear-gradient(180deg, rgba(85, 98, 98, 0.63), rgba(28, 34, 34, 0.9));
+}
+
+.good-novel-vignette {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.47), transparent 29%, transparent 54%, rgba(0, 0, 0, 0.74)),
+    radial-gradient(ellipse at 50% 42%, transparent 38%, rgba(0, 0, 0, 0.56) 100%);
+}
+
+.good-novel-status {
+  position: absolute;
+  z-index: 8;
+  top: clamp(18px, 3vh, 34px);
+  left: clamp(18px, 3vw, 48px);
+  width: min(250px, 30vw);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 5px 14px;
+  color: rgba(233, 239, 235, 0.66);
+  font: 700 9px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.15em;
+  text-shadow: 0 2px 7px #000;
+}
+
+.good-novel-status strong {
+  color: #f3eee8;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+.good-novel-status i {
+  grid-column: 1 / -1;
+  height: 2px;
+  overflow: hidden;
+  background: rgba(238, 236, 226, 0.19);
+}
+
+.good-novel-status i b {
+  height: 100%;
+  display: block;
+  background: #cfbca8;
+  box-shadow: 0 0 10px rgba(225, 205, 184, 0.58);
+}
+
+.good-novel-status small {
+  grid-column: 1 / -1;
+  color: rgba(220, 228, 223, 0.44);
+  font: inherit;
+  font-size: 7px;
+}
+
+.good-novel-top-ui {
+  position: absolute;
+  z-index: 22;
+  top: clamp(16px, 2.5vh, 30px);
+  right: clamp(16px, 2.5vw, 38px);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.good-novel-audio-wrap {
+  position: relative;
+  min-height: 46px;
+  padding: 6px 6px 6px 14px;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 2px 14px;
+  border: 1px solid rgba(220, 214, 204, 0.28);
+  background: rgba(5, 7, 8, 0.77);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(5px);
+}
+
+.good-novel-file,
+.good-novel-time {
+  color: rgba(227, 232, 226, 0.62);
+  font: 600 7px/1.3 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.08em;
+}
+
+.good-novel-time b {
+  color: rgba(247, 241, 232, 0.82);
+  font-weight: 600;
+}
+
+.good-novel-tool {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-width: 108px;
+  min-height: 34px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(220, 203, 186, 0.47);
+  color: #eee5db;
+  background: rgba(29, 25, 25, 0.86);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.good-novel-tool:hover {
+  border-color: rgba(239, 218, 196, 0.78);
+  background: rgba(69, 55, 50, 0.92);
+}
+
+.good-novel-tool svg {
+  width: 13px;
+  height: 13px;
+  fill: currentColor;
+}
+
+.good-novel-audio-notice {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  width: min(360px, 80vw);
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid rgba(173, 48, 58, 0.7);
+  color: #f1c7ca;
+  background: rgba(43, 11, 15, 0.94);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.good-novel-menu {
+  position: relative;
+}
+
+.good-novel-menu summary {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-content: center;
+  gap: 5px;
+  border: 1px solid rgba(220, 214, 204, 0.36);
+  color: #eee9e2;
+  background: rgba(5, 7, 8, 0.79);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.34);
+  list-style: none;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+}
+
+.good-novel-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.good-novel-menu summary span {
+  width: 18px;
+  height: 1px;
+  display: block;
+  background: currentColor;
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.good-novel-menu[open] summary span:first-child {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.good-novel-menu[open] summary span:nth-child(2) {
+  opacity: 0;
+}
+
+.good-novel-menu[open] summary span:last-child {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.good-novel-menu-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 218px;
+  padding: 8px;
+  display: grid;
+  border: 1px solid rgba(220, 214, 204, 0.34);
+  background: rgba(5, 7, 8, 0.96);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.54);
+}
+
+.good-novel-menu-panel p {
+  margin: 0 0 6px;
+  padding: 8px 10px 10px;
+  border-bottom: 1px solid rgba(220, 214, 204, 0.16);
+  color: rgba(225, 220, 211, 0.52);
+  font: 700 8px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.1em;
+}
+
+.good-novel-menu-panel a,
+.good-novel-menu-panel button,
+.good-novel-menu-panel > span {
+  min-height: 39px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  border: 0;
+  color: #e8e1d8;
+  background: transparent;
+  font-size: 11px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.good-novel-menu-panel a:hover,
+.good-novel-menu-panel button:hover {
+  color: #fff;
+  background: rgba(205, 184, 162, 0.13);
+}
+
+.good-novel-menu-panel .is-disabled {
+  color: rgba(219, 220, 213, 0.26);
+  cursor: default;
+}
+
+.good-novel-textbox {
+  position: absolute;
+  z-index: 10;
+  left: 3vw;
+  right: 3vw;
+  bottom: 3vh;
+  min-height: min(25vh, 220px);
+  padding: 42px clamp(28px, 4vw, 64px) 29px;
+  overflow: visible;
+  border: 1px solid rgba(224, 205, 188, 0.38);
+  border-left: 4px solid rgba(194, 168, 145, 0.7);
+  color: #f5f0ea;
+  background: linear-gradient(90deg, rgba(3, 3, 5, 0.96), rgba(15, 12, 14, 0.9));
+  box-shadow: 0 14px 48px rgba(0, 0, 0, 0.64), inset 0 0 36px rgba(173, 139, 112, 0.035);
+  cursor: inherit;
+  backdrop-filter: blur(5px);
+}
+
+.good-novel-screen:focus-visible .good-novel-textbox {
+  border-color: rgba(235, 217, 199, 0.62);
+  border-left-color: #d2af91;
+}
+
+.good-novel-textbox.is-final {
+  border-left-color: #d9c39a;
+  cursor: default;
+}
+
+.good-novel-speaker {
+  position: absolute;
+  z-index: 2;
+  top: -18px;
+  left: clamp(22px, 3vw, 50px);
+  min-width: 190px;
+  padding: 9px 24px;
+  border: 1px solid rgba(224, 205, 188, 0.44);
+  border-left: 3px solid #c4a488;
+  color: #fff7ee;
+  background: rgba(10, 8, 10, 0.98);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.44);
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+
+.good-novel-textbox.is-narration .good-novel-speaker {
+  min-width: 126px;
+  color: transparent;
+}
+
+.good-novel-line {
+  margin: 0;
+  color: #f3eee8;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: clamp(17px, 1.75vw, 25px);
+  line-height: 1.85;
+  letter-spacing: 0.045em;
+  white-space: pre-wrap;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.88);
+}
+
+.good-novel-textbox.is-dialogue .good-novel-line {
+  font-weight: 600;
+}
+
+.good-novel-next-mark {
+  position: absolute;
+  right: 25px;
+  bottom: 13px;
+  color: #d9bfa7;
+  font: 700 11px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.1em;
+  animation: good-next-pulse 1.35s ease-in-out infinite;
+}
+
+.good-novel-textbox.is-final .good-novel-next-mark {
+  animation: none;
+}
+
+.good-novel-final-actions {
+  position: absolute;
+  z-index: 12;
+  right: 3vw;
+  bottom: min(31vh, 276px);
+  display: flex;
+  gap: 8px;
+}
+
+.good-novel-final-actions a,
+.good-novel-final-actions button {
+  min-height: 39px;
+  padding: 0 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(231, 221, 208, 0.46);
+  color: #f2ece4;
+  background: rgba(6, 8, 9, 0.82);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+}
+
+.good-novel-final-actions a:hover,
+.good-novel-final-actions button:hover {
+  background: rgba(58, 51, 47, 0.92);
+}
+
+.good-novel-load-error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #d9c5ba;
+}
+
+@keyframes good-next-pulse {
+  0%, 100% { opacity: 0.38; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(3px); }
 }
 
 .management-heading-actions {
@@ -2278,6 +2797,51 @@ a:focus-visible {
   .ending-copy p { font-size: 14px; }
   .ending-actions { flex-direction: column; }
   .ending-actions a, .ending-actions button { width: 100%; }
+  .app-frame.good-mode.good-novel-mode { height: 100dvh; min-height: 100svh; padding-top: 0; }
+  .good-novel-status {
+    top: 12px;
+    left: 12px;
+    width: min(150px, 39vw);
+    gap: 4px 8px;
+    font-size: 7px;
+  }
+  .good-novel-status strong { font-size: 9px; }
+  .good-novel-status small { display: none; }
+  .good-novel-top-ui { top: 10px; right: 10px; gap: 7px; }
+  .good-novel-audio-wrap { min-height: 42px; padding: 4px; display: block; }
+  .good-novel-file, .good-novel-time { display: none; }
+  .good-novel-tool { min-width: 92px; min-height: 32px; padding: 0 9px; font-size: 9px; }
+  .good-novel-menu summary { width: 42px; height: 42px; }
+  .good-novel-menu-panel { width: min(218px, calc(100vw - 20px)); }
+  .good-novel-textbox {
+    left: 10px;
+    right: 10px;
+    bottom: 11px;
+    min-height: 26vh;
+    max-height: none;
+    padding: 35px 20px 24px;
+    border-left-width: 3px;
+  }
+  .good-novel-speaker {
+    top: -15px;
+    left: 18px;
+    min-width: 145px;
+    padding: 7px 17px;
+    font-size: 13px;
+  }
+  .good-novel-textbox.is-narration .good-novel-speaker { min-width: 94px; }
+  .good-novel-line { font-size: 16px; line-height: 1.8; letter-spacing: 0.025em; }
+  .good-novel-next-mark { right: 17px; bottom: 9px; }
+  .good-novel-final-actions {
+    top: 66px;
+    right: 10px;
+    bottom: auto;
+    left: 10px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .good-novel-final-actions a,
+  .good-novel-final-actions button { min-height: 34px; padding: 0 11px; font-size: 8px; }
   .credits-modal { padding: 24px 18px; }
   .credits-list { grid-template-columns: 1fr; padding-top: 18px; }
   .history-toggle { right: 16px; bottom: 74px; }
@@ -2290,6 +2854,20 @@ a:focus-visible {
   }
   .site-footer span { grid-column: 1; }
   .site-footer strong { grid-column: 2; }
+}
+
+@media (max-height: 560px) and (min-width: 761px) {
+  .good-novel-status { top: 12px; }
+  .good-novel-top-ui { top: 10px; }
+  .good-novel-textbox {
+    bottom: 12px;
+    min-height: 34vh;
+    max-height: none;
+    padding-top: 35px;
+    padding-bottom: 22px;
+  }
+  .good-novel-line { font-size: clamp(15px, 1.55vw, 20px); line-height: 1.65; }
+  .good-novel-final-actions { top: 67px; right: 2.5vw; bottom: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {

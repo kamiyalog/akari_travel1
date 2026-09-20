@@ -18,12 +18,15 @@
   const GAME_ACCESS_SESSION_KEY = "jada.gameAccessUnlocked.v1";
   const INITIAL_DISCOVERED = gameData.initialPageNumbers.map(String);
   const audioRecords = gameData.audioRecords;
+  const goodEndingNovel = gameData.goodEndingNovel ?? [];
+  const GOOD_END_REPORT_PAGE = goodEndingNovel.length + 1;
   const credits = gameData.credits ?? [];
   const recordByPage = new Map(audioRecords.map((record) => [String(record.page), record]));
   const validRecordPages = new Set(recordByPage.keys());
   const SPOILER_ROLE_MASKS = Object.freeze({
     MORITAKA: "■■ ■",
     AKARI: "■■ ■■",
+    NEMU: "■■■■",
   });
   // 音声だけを手掛かりに検索できるよう、全検索語の読みを登録する。
   // カタカナは normalizeTerm でひらがなへ統一されるため、両方の入力に対応する。
@@ -166,6 +169,12 @@
     );
   }
 
+  function clampGoodEndingPage(value) {
+    const page = Number(value);
+    if (!Number.isInteger(page)) return 1;
+    return Math.min(Math.max(page, 1), Math.max(GOOD_END_REPORT_PAGE, 1));
+  }
+
   function routeForPage(page) {
     const key = String(page);
     if (key === LOGIN_PAGE_KEY) return "#top";
@@ -181,17 +190,28 @@
     try {
       route = decodeURIComponent(route);
     } catch {
-      return LOGIN_PAGE_KEY;
+      return { page: LOGIN_PAGE_KEY, goodEndingPage: 1 };
     }
 
-    if (!route || route === "top") return LOGIN_PAGE_KEY;
-    if (route === "management") return MANAGEMENT_PAGE_KEY;
-    if (route === "end/good") return "35";
-    if (route === "end/bad") return "36";
+    if (!route || route === "top") return { page: LOGIN_PAGE_KEY, goodEndingPage: 1 };
+    if (route === "management") return { page: MANAGEMENT_PAGE_KEY, goodEndingPage: 1 };
+    const goodEndingMatch = route.match(/^end\/good(?:\/\d+)?$/);
+    if (goodEndingMatch) {
+      if (route !== "end/good") {
+        window.history.replaceState(null, "", "#end/good");
+      }
+      return {
+        page: "35",
+        goodEndingPage: 1,
+      };
+    }
+    if (route === "end/bad") return { page: "36", goodEndingPage: 1 };
 
     const recordMatch = route.match(/^record\/(.+)$/);
-    if (recordMatch && validRecordPages.has(recordMatch[1])) return recordMatch[1];
-    return LOGIN_PAGE_KEY;
+    if (recordMatch && validRecordPages.has(recordMatch[1])) {
+      return { page: recordMatch[1], goodEndingPage: 1 };
+    }
+    return { page: LOGIN_PAGE_KEY, goodEndingPage: 1 };
   }
 
   function threatStage(record) {
@@ -260,7 +280,8 @@
     readStoredList(STORAGE.historySeen, storedViewed)
       .filter((page) => storedViewed.includes(page)),
   );
-  const initialPage = pageFromRoute();
+  const initialRoute = pageFromRoute();
+  const initialPage = initialRoute.page;
   const initialViewed = END_PAGE_KEYS.has(initialPage)
     ? storedViewed
     : unique([...storedViewed, initialPage]);
@@ -273,6 +294,7 @@
     viewed: initialViewed,
     historySeen: storedHistorySeen,
     current: initialPage,
+    goodEndingPage: initialRoute.goodEndingPage,
     query: "",
     notice: "",
     historyOpen: false,
@@ -529,31 +551,97 @@
       </main>`;
   }
 
-  function endPage(ending) {
-    const isGood = ending === "good";
-    const title = isGood ? "通報を受け付けました。" : "観察を続けます。";
-    const page = isGood ? 35 : 36;
+  function goodNovelSceneClass(background) {
+    const classes = {
+      "ほの暗い地下のオフィス": "scene-underground-office",
+      "地下施設の廊下": "scene-underground-corridor",
+      "黒背景（真っ黒にしてごまかす）": "scene-blackout",
+      "夜明け前の路地": "scene-pre-dawn-alley",
+      "警察署・早朝": "scene-police-early",
+      "警察署・朝": "scene-police-morning",
+    };
+    return classes[background] ?? "scene-underground-office";
+  }
+
+  function goodEndPage() {
+    if (state.goodEndingPage === GOOD_END_REPORT_PAGE) {
+      return goodEndReportPage();
+    }
+
+    const record = goodEndingNovel[state.goodEndingPage - 1];
+    if (!record) {
+      return `<main class="good-novel-screen scene-blackout"><p class="good-novel-load-error">GOOD ENDデータを読み込めませんでした。</p></main>`;
+    }
+
+    const current = state.goodEndingPage;
+    const nextPage = current + 1;
+    const sceneClass = goodNovelSceneClass(record.background);
+
+    return `
+      <main
+        class="good-novel-screen ${sceneClass}"
+        data-good-advance="${nextPage}"
+        role="button"
+        tabindex="0"
+        aria-label="次の文章へ"
+      >
+        <div class="good-novel-scene" data-scene="${escapeHtml(record.background)}" aria-label="背景：${escapeHtml(record.background)}"></div>
+        <div class="good-novel-vignette" aria-hidden="true"></div>
+
+        <audio id="good-novel-audio" src="./audio/${escapeHtml(record.audioFile)}" preload="auto" autoplay></audio>
+
+        <div
+          class="good-novel-textbox ${record.displayName === "-" ? "is-narration" : "is-dialogue"}"
+        >
+          <div class="good-novel-speaker">${escapeHtml(record.displayName === "-" ? "　" : (record.displayName || "　"))}</div>
+          <p class="good-novel-line">${escapeHtml(record.transcript)}</p>
+          <span class="good-novel-next-mark">▼</span>
+        </div>
+      </main>`;
+  }
+
+  function goodEndReportPage() {
+    const title = "通報を受け付けました。";
     const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent("https://note.com/mei_takanashi/n/n3feac10f5e07")}&lang=ja`;
 
     return `
-      <main class="page-shell end-page ${isGood ? "good-ending" : "bad-ending"}">
-        <div class="record-topline"><span>NO.${String(page).padStart(3, "0")}</span><span>FINAL REPORT</span></div>
+      <main class="page-shell end-page good-ending">
+        <div class="record-topline"><span>NO.035</span><span>FINAL REPORT</span></div>
         <section class="end-document">
-          <div class="end-stamp">${isGood ? "REPORTED" : "OBSERVE"}</div>
+          <div class="end-stamp">REPORTED</div>
           <p class="eyebrow">JAPAN AUDIO DATA ADMINISTRATION</p>
           <h1>${title}</h1>
-          ${isGood ? `
-            <div class="ending-copy">
-              <p>提出された記録は緊急案件として受理され、警察は南沖島・伊炬町へ向かった。</p>
-              <p>村内では二名の生存者を保護。村民を含む二十名の死亡が確認された。</p>
-              <p>音声記録は証拠として保全され、関係者への捜査が開始された。</p>
-            </div>` : `
-            <div class="ending-copy">
-              <p>要観察として処理したはずの音声データは、翌朝、管理ページから消えていた。</p>
-              <p>これまでに閲覧した記録も、検索履歴も残されていない。</p>
-              <p>デスクトップには、見覚えのない録音アプリだけが起動している……。</p>
-              <span class="recording-indicator"><i></i> RECORDING&nbsp;&nbsp;00:00:07</span>
-            </div>`}
+          <div class="ending-copy">
+            <p>提出された記録は緊急案件として受理され、警察は南沖島・伊炬町へ向かった。</p>
+            <p>村内では二名の生存者を保護。村民を含む二十名の死亡が確認された。</p>
+            <p>音声記録は証拠として保全され、関係者への捜査が開始された。</p>
+          </div>
+          <div class="ending-actions">
+            <a href="${shareUrl}" target="_blank" rel="noreferrer">Xで報告する</a>
+            <a class="ending-return" href="${routeForPage(MANAGEMENT_PAGE_KEY)}" data-open-page="${MANAGEMENT_PAGE_KEY}">管理ページへ戻る</a>
+            <button type="button" data-open-credits>クレジット</button>
+          </div>
+        </section>
+      </main>`;
+  }
+
+  function badEndPage() {
+    const title = "観察を続けます。";
+    const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent("https://note.com/mei_takanashi/n/n3feac10f5e07")}&lang=ja`;
+
+    return `
+      <main class="page-shell end-page bad-ending">
+        <div class="record-topline"><span>NO.036</span><span>FINAL REPORT</span></div>
+        <section class="end-document">
+          <div class="end-stamp">OBSERVE</div>
+          <p class="eyebrow">JAPAN AUDIO DATA ADMINISTRATION</p>
+          <h1>${title}</h1>
+          <div class="ending-copy">
+            <p>要観察として処理したはずの音声データは、翌朝、管理ページから消えていた。</p>
+            <p>これまでに閲覧した記録も、検索履歴も残されていない。</p>
+            <p>デスクトップには、見覚えのない録音アプリだけが起動している……。</p>
+            <span class="recording-indicator"><i></i> RECORDING&nbsp;&nbsp;00:00:07</span>
+          </div>
           <div class="ending-actions">
             <a href="${shareUrl}" target="_blank" rel="noreferrer">Xで報告する</a>
             <a class="ending-return" href="${routeForPage(MANAGEMENT_PAGE_KEY)}" data-open-page="${MANAGEMENT_PAGE_KEY}">管理ページへ戻る</a>
@@ -647,12 +735,22 @@
   }
 
   function footerPage(activeRecord) {
-    if (END_PAGE_KEYS.has(state.current)) return `${state.current} / 36`;
+    if (state.current === "35") {
+      return "35 / 36";
+    }
+    if (state.current === "36") return "36 / 36";
     if (activeRecord && typeof activeRecord.page === "string") return activeRecord.page;
     return `${activeRecord ? activeRecord.page : 1} / 36`;
   }
 
   function render() {
+    const outgoingNovelAudio = document.getElementById("good-novel-audio");
+    if (outgoingNovelAudio) {
+      outgoingNovelAudio.pause?.();
+      outgoingNovelAudio.removeAttribute?.("src");
+      outgoingNovelAudio.load?.();
+    }
+
     if (state.current === LOGIN_PAGE_KEY) {
       document.title = "日本音声データ管理システム";
       app.innerHTML = loginPage();
@@ -665,10 +763,10 @@
 
     if (state.current === "35") {
       document.title = "GOOD END｜日本音声データ管理システム";
-      main = endPage("good");
+      main = goodEndPage();
     } else if (state.current === "36") {
       document.title = "BAD END｜日本音声データ管理システム";
-      main = endPage("bad");
+      main = badEndPage();
     } else if (state.current === MANAGEMENT_PAGE_KEY || !activeRecord) {
       document.title = "音声データ管理｜日本音声データ管理システム";
       main = managementPage();
@@ -677,9 +775,14 @@
       main = audioPage(activeRecord);
     }
 
+    const isGoodEnding = state.current === "35";
+    const isGoodNovel = isGoodEnding && state.goodEndingPage <= goodEndingNovel.length;
+    const isGoodReport = isGoodEnding && state.goodEndingPage === GOOD_END_REPORT_PAGE;
     const frameClasses = [
       "app-frame",
-      state.current === "35" ? "good-mode" : "",
+      isGoodEnding ? "good-mode" : "",
+      isGoodNovel ? "good-novel-mode" : "",
+      isGoodReport ? "good-report-mode" : "",
       activeRecord && threatStage(activeRecord) ? `threat-stage-${threatStage(activeRecord)}` : "",
       state.justLoggedIn ? "is-entering" : "",
     ].filter(Boolean).join(" ");
@@ -688,7 +791,7 @@
 
     app.innerHTML = `
       <div class="${frameClasses}">
-        <header class="site-header">
+        ${isGoodNovel ? "" : `<header class="site-header">
           <a class="brand" href="${routeForPage(MANAGEMENT_PAGE_KEY)}" data-open-page="${MANAGEMENT_PAGE_KEY}" aria-label="管理ページへ戻る">
             <span class="brand-mark">JADA</span>
             <span><b>日本音声データ管理協会</b><small>JAPAN AUDIO DATA ADMINISTRATION</small></span>
@@ -696,11 +799,11 @@
           <form class="search-form" id="search-form">
             <label for="archive-search" class="sr-only">音声データを検索</label>
             <input id="archive-search" value="${escapeHtml(state.query)}" placeholder="音声内の語句を入力" autocomplete="off">
-            <button type="submit">${searchIcon()}<span>検索</span></button>
-          </form>
-        </header>
+              <button type="submit">${searchIcon()}<span>検索</span></button>
+            </form>
+        </header>`}
 
-        ${state.notice ? `
+        ${!isGoodNovel && state.notice ? `
           <button class="search-notice" id="search-notice" type="button">
             <span>${escapeHtml(state.notice)}</span><span aria-hidden="true">×</span>
           </button>` : ""}
@@ -709,7 +812,7 @@
         ${confirmModal()}
         ${creditsModal(END_PAGE_KEYS.has(state.current))}
 
-        <button class="history-toggle" id="history-toggle" type="button" aria-label="${newHistoryCount ? `閲覧履歴を開く（新規${newHistoryCount}件）` : "閲覧履歴を開く"}">
+        ${isGoodNovel ? "" : `<button class="history-toggle" id="history-toggle" type="button" aria-label="${newHistoryCount ? `閲覧履歴を開く（新規${newHistoryCount}件）` : "閲覧履歴を開く"}">
           ${diskIcon()}${newHistoryCount ? `<span class="history-badge">${newHistoryCount}</span>` : ""}
         </button>
 
@@ -726,16 +829,21 @@
         <footer class="site-footer">
           <span>本作はフィクションです。実在の人物・団体・事件とは関係ありません。</span>
           <strong>${escapeHtml(footerPage(activeRecord))}</strong>
-        </footer>
+        </footer>`}
       </div>`;
 
     bindEvents(activeRecord);
   }
 
-  function activatePage(page) {
+  function activatePage(page, options = {}) {
     const key = String(page);
     if (!isValidPageKey(key)) return;
     state.current = key;
+    if (key === "35") {
+      state.goodEndingPage = clampGoodEndingPage(
+        options.goodEndingPage ?? state.goodEndingPage,
+      );
+    }
     if (!END_PAGE_KEYS.has(key)) {
       state.viewed = unique([...state.viewed, key]);
     }
@@ -752,20 +860,29 @@
     const key = String(page);
     if (!isValidPageKey(key)) return;
 
-    const route = routeForPage(key);
+    const goodEndingPage = key === "35"
+      ? clampGoodEndingPage(options.goodEndingPage ?? 1)
+      : 1;
+    const route = routeForPage(key, goodEndingPage);
     const alreadyOnRoute = (
       window.location.hash === route
       || (!window.location.hash && key === LOGIN_PAGE_KEY)
     );
 
     if (alreadyOnRoute) {
-      activatePage(key);
+      activatePage(key, { goodEndingPage });
+      return;
+    }
+
+    if (key === "35") {
+      window.history.pushState(null, "", route);
+      activatePage(key, { goodEndingPage: 1 });
       return;
     }
 
     if (options.replace) {
       window.history.replaceState(null, "", route);
-      activatePage(key);
+      activatePage(key, { goodEndingPage });
       return;
     }
 
@@ -773,7 +890,8 @@
   }
 
   function syncPageFromRoute() {
-    activatePage(pageFromRoute());
+    const nextRoute = pageFromRoute();
+    activatePage(nextRoute.page, { goodEndingPage: nextRoute.goodEndingPage });
   }
 
   function handleSearch(event) {
@@ -813,6 +931,7 @@
     state.creditsOpen = false;
     state.decision = null;
     state.transcriptOpen = false;
+    state.goodEndingPage = 1;
     state.notice = "保存データをリセットしました。";
     openPage(LOGIN_PAGE_KEY, { replace: true });
   }
@@ -821,7 +940,7 @@
     if (!state.decision) return;
     const endingPage = state.decision === "report" ? "35" : "36";
     state.decision = null;
-    openPage(endingPage);
+    openPage(endingPage, { goodEndingPage: 1 });
   }
 
   function bindAudio() {
@@ -841,7 +960,10 @@
 
     function updateButton() {
       const isPlaying = !audio.paused && !audio.ended;
-      playButton.innerHTML = playIcon(isPlaying);
+      const isNovelButton = playButton.classList.contains("good-novel-audio-button");
+      playButton.innerHTML = isNovelButton
+        ? `${playIcon(isPlaying)}<span>${isPlaying ? "一時停止" : "音声再生"}</span>`
+        : playIcon(isPlaying);
       playButton.setAttribute("aria-label", isPlaying ? "一時停止" : "音声を再生");
     }
 
@@ -879,6 +1001,22 @@
       updateButton();
       showAudioNotice("音声データを読み込めませんでした。audioフォルダを確認してください。");
     });
+  }
+
+  function bindGoodNovelAudio() {
+    const audio = document.getElementById("good-novel-audio");
+    if (!audio) return;
+
+    const startPlayback = () => {
+      const playback = audio.play();
+      if (playback?.catch) playback.catch(() => {});
+    };
+
+    if (audio.readyState >= 2) {
+      startPlayback();
+    } else {
+      audio.addEventListener("canplay", startPlayback, { once: true });
+    }
   }
 
   function bindLogin() {
@@ -933,14 +1071,17 @@
         ) return;
 
         const key = String(link.dataset.openPage);
+        const goodEndingPage = key === "35"
+          ? clampGoodEndingPage(link.dataset.goodPage ?? 1)
+          : 1;
         const alreadyOnRoute = (
-          window.location.hash === routeForPage(key)
+          window.location.hash === routeForPage(key, goodEndingPage)
           || (!window.location.hash && key === LOGIN_PAGE_KEY)
         );
         if (!alreadyOnRoute) return;
 
         event.preventDefault();
-        activatePage(key);
+        activatePage(key, { goodEndingPage });
       });
     });
 
@@ -1011,8 +1152,31 @@
 
     app.querySelector("[data-confirm-decision]")?.addEventListener("click", confirmDecision);
 
+    const goodAdvance = app.querySelector("[data-good-advance]");
+    if (goodAdvance) {
+      const advanceGoodNovel = () => {
+        state.goodEndingPage = clampGoodEndingPage(goodAdvance.dataset.goodAdvance);
+        state.creditsOpen = false;
+        render();
+      };
+      goodAdvance.addEventListener("click", (event) => {
+        if (event.target.closest("button, a, input, textarea, select, summary, details, [data-no-advance]")) return;
+        advanceGoodNovel();
+      });
+      goodAdvance.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        advanceGoodNovel();
+      });
+    }
+
     if (activeRecord) {
       bindAudio();
+    }
+    if (state.current === "35" && state.goodEndingPage <= goodEndingNovel.length) {
+      bindGoodNovelAudio();
+    }
+    if (activeRecord) {
       bindTranscript();
     }
   }

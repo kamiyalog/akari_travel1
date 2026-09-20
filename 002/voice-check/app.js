@@ -19,7 +19,10 @@
     return;
   }
 
-  const records = gameData.audioRecords ?? [];
+  const records = [
+    ...(gameData.audioRecords ?? []),
+    ...(gameData.goodEndingNovel ?? []),
+  ];
   const credits = gameData.credits ?? [];
   let activeRole = "ALL";
 
