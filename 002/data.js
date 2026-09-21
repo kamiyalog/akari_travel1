@@ -19,7 +19,7 @@
     { role: "病院職員", voiceActor: "永井あめ", audioPrefix: "HOSPITAL" },
     { role: "内藤美樹", voiceActor: "ちそら", audioPrefix: "NAITO" },
     { role: "森高宵", voiceActor: "ねこのたまむら", audioPrefix: "MORITAKA" },
-    { role: "明坂音夢", voiceActor: "未定", audioPrefix: "NEMU" },
+    { role: "明坂音夢", voiceActor: "ナーサリー・ライム", audioPrefix: "NEMU" },
   ];
   
   const audioRecords = [
