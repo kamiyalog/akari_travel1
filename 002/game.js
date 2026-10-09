@@ -430,7 +430,6 @@
             <h1>音声データ管理ページ</h1>
           </div>
           <div class="management-heading-actions">
-            <button class="credit-button" data-open-credits type="button">クレジット</button>
             <div class="queue-counter">
               <span>表示件数</span>
               <strong>${String(records.length).padStart(2, "0")}</strong>
