@@ -13,7 +13,7 @@
   const MANAGEMENT_PAGE_KEY = "1";
   const END_PAGE_KEYS = new Set(["35", "36"]);
   // ユーザー公開時は false に変更すると、本編確認用パスワードを無効化できます。
-  const GAME_ACCESS_REQUIRED = true;
+  const GAME_ACCESS_REQUIRED = false;
   const GAME_ACCESS_CODE = "1001";
   const GAME_ACCESS_SESSION_KEY = "jada.gameAccessUnlocked.v1";
   const INITIAL_DISCOVERED = gameData.initialPageNumbers.map(String);
