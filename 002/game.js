@@ -601,7 +601,12 @@
 
   function goodEndReportPage() {
     const title = "通報を受け付けました。";
-    const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent("https://note.com/mei_takanashi/n/n3feac10f5e07")}&lang=ja`;
+    const shareText = [
+      "通報を受け付けました",
+      "https://note.com/mei_takanashi/n/n3feac10f5e07",
+      "#日本音声データ管理協会",
+    ].join("\n");
+    const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&lang=ja`;
 
     return `
       <main class="page-shell end-page good-ending">
@@ -626,7 +631,12 @@
 
   function badEndPage() {
     const title = "観察を続けます。";
-    const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent("https://note.com/mei_takanashi/n/n3feac10f5e07")}&lang=ja`;
+    const shareText = [
+      "観察を続けます。",
+      "https://note.com/mei_takanashi/n/n3feac10f5e07",
+      "#日本音声データ管理協会",
+    ].join("\n");
+    const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&lang=ja`;
 
     return `
       <main class="page-shell end-page bad-ending">
