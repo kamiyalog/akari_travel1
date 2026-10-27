@@ -489,15 +489,48 @@ a:focus-visible {
 }
 
 .player-body {
+  position: relative;
+  width: min(100%, 285px);
+  height: 48px;
   min-width: 0;
 }
 
-.waveform {
+.waveform-seek {
+  position: relative;
   height: 48px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.waveform-seek::after {
+  content: "SEEK / DRAG";
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: -8px;
+  color: #6c827d;
+  font: 7px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.14em;
+  opacity: 0.78;
+  pointer-events: none;
+}
+
+.waveform-seek.is-disabled {
+  cursor: not-allowed;
+}
+
+.waveform-seek.is-disabled::after {
+  opacity: 0.32;
+}
+
+.waveform {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   gap: 3px;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .waveform i {
@@ -512,8 +545,77 @@ a:focus-visible {
   background: #d2ded8;
 }
 
+.waveform-range {
+  --seek-marker: #d2ded8;
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  pointer-events: none;
+}
+
+.waveform-range::-webkit-slider-runnable-track {
+  height: 100%;
+  background: transparent;
+}
+
+.waveform-range::-webkit-slider-thumb {
+  width: 3px;
+  height: 52px;
+  margin-top: -2px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: 2px;
+  background: var(--seek-marker);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--seek-marker) 60%, transparent);
+}
+
+.waveform-range::-moz-range-track {
+  height: 100%;
+  border: 0;
+  background: transparent;
+}
+
+.waveform-range::-moz-range-progress {
+  background: transparent;
+}
+
+.waveform-range::-moz-range-thumb {
+  width: 3px;
+  height: 52px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--seek-marker);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--seek-marker) 60%, transparent);
+}
+
+.waveform-range:hover {
+  --seek-marker: #edf4f1;
+}
+
+.waveform-range:disabled {
+  pointer-events: none;
+}
+
+.waveform-range:disabled::-webkit-slider-thumb {
+  opacity: 0;
+}
+
+.waveform-range:disabled::-moz-range-thumb {
+  opacity: 0;
+}
+
 .player-time {
-  margin-top: 8px;
+  position: absolute;
+  inset: calc(100% + 8px) 0 auto;
+  margin: 0;
   display: flex;
   justify-content: space-between;
   color: #8ca29b;
@@ -1258,6 +1360,10 @@ a:focus-visible {
   background: #8eaaa3;
 }
 
+.waveform-range {
+  --seek-marker: #8eaaa3;
+}
+
 .player-time {
   color: #6c827d;
 }
@@ -1550,6 +1656,10 @@ a:focus-visible {
 
 .late-record .waveform i.passed {
   background: var(--threat-accent);
+}
+
+.late-record .waveform-range {
+  --seek-marker: var(--threat-accent);
 }
 
 .late-record .transcript-toggle {
@@ -2674,8 +2784,12 @@ a:focus-visible {
   .metadata-grid > div:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
   .player-panel { padding: 22px 18px; grid-template-columns: 58px 1fr; gap: 15px; }
   .play-button { width: 52px; height: 52px; }
+  .player-body { width: min(100%, 190px); height: 42px; }
+  .waveform-seek { height: 42px; }
   .waveform { gap: 2px; }
   .waveform i { width: 2px; min-width: 2px; }
+  .waveform-range::-webkit-slider-thumb { height: 46px; }
+  .waveform-range::-moz-range-thumb { height: 46px; }
   .audio-notice { grid-column: 1 / -1; }
   .transcript-toggle { grid-template-columns: 30px minmax(0, 1fr) auto; padding: 11px 12px; gap: 10px; }
   .transcript-toggle-copy small { font-size: 7px; letter-spacing: 0.1em; }

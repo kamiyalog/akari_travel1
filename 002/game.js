@@ -497,8 +497,26 @@
             ${playIcon(false)}
           </button>
           <div class="player-body">
-            <div class="waveform" id="waveform" aria-hidden="true">
-              ${waveform.map((height) => `<i style="height:${height}%"></i>`).join("")}
+            <div
+              class="waveform-seek is-disabled"
+              id="waveform-seek"
+              title="波形をクリックまたはドラッグして再生位置を移動"
+            >
+              <div class="waveform" id="waveform" aria-hidden="true">
+                ${waveform.map((height) => `<i style="height:${height}%"></i>`).join("")}
+              </div>
+              <input
+                class="waveform-range"
+                id="audio-seekbar"
+                type="range"
+                min="0"
+                max="1000"
+                step="0.1"
+                value="0"
+                aria-label="音声の再生位置"
+                aria-valuetext="00:00 / --:--"
+                disabled
+              >
             </div>
             <div class="player-time">
               <span id="current-time">00:00</span>
@@ -958,9 +976,11 @@
     const currentTime = document.getElementById("current-time");
     const duration = document.getElementById("duration");
     const notice = document.getElementById("audio-notice");
+    const seekbar = document.getElementById("audio-seekbar");
+    const waveformSeek = document.getElementById("waveform-seek");
     const bars = [...document.querySelectorAll("#waveform i")];
 
-    if (!audio || !playButton || !currentTime || !duration || !notice) return;
+    if (!audio || !playButton || !currentTime || !duration || !notice || !seekbar || !waveformSeek) return;
 
     function showAudioNotice(message) {
       notice.textContent = message;
@@ -983,10 +1003,68 @@
         : 0;
       currentTime.textContent = formatTime(audio.currentTime);
       duration.textContent = formatTime(nextDuration);
+      seekbar.disabled = !(Number.isFinite(nextDuration) && nextDuration > 0);
+      waveformSeek.classList.toggle("is-disabled", seekbar.disabled);
+      seekbar.max = seekbar.disabled ? "1000" : String(nextDuration);
+      seekbar.value = seekbar.disabled ? "0" : String(Math.min(audio.currentTime, nextDuration));
+      seekbar.setAttribute(
+        "aria-valuetext",
+        `${formatTime(audio.currentTime)} / ${formatTime(nextDuration)}`,
+      );
+      const boundedProgress = Math.max(0, Math.min(progress, 100));
       bars.forEach((bar, index) => {
-        bar.classList.toggle("passed", progress > (index / bars.length) * 100);
+        bar.classList.toggle("passed", boundedProgress > (index / bars.length) * 100);
       });
     }
+
+    function seekFromClientX(clientX) {
+      const nextDuration = audio.duration;
+      if (seekbar.disabled || !Number.isFinite(nextDuration) || nextDuration <= 0) return;
+      const bounds = waveformSeek.getBoundingClientRect();
+      if (bounds.width <= 0) return;
+      const ratio = Math.max(0, Math.min((clientX - bounds.left) / bounds.width, 1));
+      audio.currentTime = ratio * nextDuration;
+      updateProgress();
+    }
+
+    let isScrubbing = false;
+
+    waveformSeek.addEventListener("pointerdown", (event) => {
+      if (seekbar.disabled) return;
+      isScrubbing = true;
+      seekbar.focus({ preventScroll: true });
+      waveformSeek.setPointerCapture?.(event.pointerId);
+      seekFromClientX(event.clientX);
+      event.preventDefault();
+    });
+
+    waveformSeek.addEventListener("pointermove", (event) => {
+      if (!isScrubbing) return;
+      seekFromClientX(event.clientX);
+      event.preventDefault();
+    });
+
+    const stopScrubbing = (event) => {
+      if (!isScrubbing) return;
+      seekFromClientX(event.clientX);
+      isScrubbing = false;
+      if (waveformSeek.hasPointerCapture?.(event.pointerId)) {
+        waveformSeek.releasePointerCapture(event.pointerId);
+      }
+    };
+
+    waveformSeek.addEventListener("pointerup", stopScrubbing);
+    waveformSeek.addEventListener("pointercancel", () => {
+      isScrubbing = false;
+    });
+
+    seekbar.addEventListener("input", () => {
+      const nextDuration = audio.duration;
+      const nextTime = Number(seekbar.value);
+      if (!Number.isFinite(nextDuration) || nextDuration <= 0 || !Number.isFinite(nextTime)) return;
+      audio.currentTime = Math.max(0, Math.min(nextTime, nextDuration));
+      updateProgress();
+    });
 
     playButton.addEventListener("click", async () => {
       if (!audio.paused) {
@@ -1005,11 +1083,14 @@
     audio.addEventListener("pause", updateButton);
     audio.addEventListener("ended", updateButton);
     audio.addEventListener("loadedmetadata", updateProgress);
+    audio.addEventListener("durationchange", updateProgress);
     audio.addEventListener("timeupdate", updateProgress);
     audio.addEventListener("error", () => {
       updateButton();
       showAudioNotice("音声データを読み込めませんでした。audioフォルダを確認してください。");
     });
+    updateButton();
+    updateProgress();
   }
 
   function bindGoodNovelAudio() {
